@@ -75,6 +75,7 @@ class World(Entity):
         self._states = list()
         self._atmosphere = None
         self._magnetic_field = None
+        print("line 90.")
         self.reset_physics(engine)
 
     def __str__(self):
@@ -148,11 +149,15 @@ class World(Entity):
     @property
     def models(self):
         """`dict`: Models"""
+        print("line 54.")
         models = dict()
         for name in self._model_groups:
+            print("line 55.")
+            print(name)
             models.update(
                 self._model_groups[name].get_models(
                     with_group_prefix=True))
+            print("line 56.")
         return models
 
     @property
@@ -213,6 +218,7 @@ class World(Entity):
         of the physics engine, options are `ode`, `bullet` or `simbody`.
         """
         if engine == 'ode':
+            print("line 91.")
             self._physics = ODE(*args, **kwargs)
         elif engine == 'bullet':
             self._physics = Bullet(*args, **kwargs)
@@ -230,6 +236,8 @@ class World(Entity):
 
     def create_model_group(self, name, pose=[0, 0, 0, 0, 0, 0]):
         if name not in self._model_groups:
+            print("line 59.")
+            print(name)
             self._model_groups[name] = ModelGroup(name=name, pose=pose)
             PCG_ROOT_LOGGER.info('New model group created: {}'.format(name))
         else:
@@ -269,7 +277,10 @@ class World(Entity):
         `bool`: `True`, if model could be added to the world.
         """
         if group not in self._model_groups:
+            print("line 57.")
+            print(group)
             self.create_model_group(group)
+        print("line 58.")
         return self._model_groups[group].add_model(tag, model)
 
     def add_model_group(self, group, tag=None):

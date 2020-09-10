@@ -25,9 +25,12 @@ from ..utils import generate_random_string
 class EngineManager(_CollectionManager):
     def __init__(self):
         super(EngineManager, self).__init__()
+        print("line 101.")
 
         self._constraints_manager = ConstraintsManager.get_instance()
+        print("line 102.")
         self._assets_manager = AssetsManager.get_instance()
+        print("line 103.")
         self._collision_checker = CollisionChecker()
 
     @property

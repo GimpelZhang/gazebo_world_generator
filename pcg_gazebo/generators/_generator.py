@@ -21,8 +21,11 @@ from ..utils import generate_random_string, is_string, \
 class _Generator(object):
     def __init__(self, name='default', **kwargs):
         from ..collection_managers import AssetsManager, EngineManager
+        print("line 93.")
         self._assets = AssetsManager.get_instance()
+        print("line 94.")
         self._engines = EngineManager()
+        print("line 95.")
         self._simulation_entity = None
         self._name = None
         self._seed = None
@@ -31,6 +34,7 @@ class _Generator(object):
         # entity to be generated
         self.name = name
         self.from_dict(kwargs)
+        print("line 96.")
 
     @property
     def name(self):
@@ -75,19 +79,27 @@ class _Generator(object):
         return self._engines.constraints_manager
 
     def _add_asset_to_simulation_entity(self, obj):
+        print("line 50.")
         from ..simulation import SimulationModel, ModelGroup, \
             Light
         if isinstance(obj, SimulationModel):
+            print("line 51.")
             PCG_ROOT_LOGGER.info(
                 'Adding model {} to world'.format(
                     obj.name))
+            print('Adding model {} to world'.format(
+                    obj.name))
             return self._simulation_entity.add_model(obj.name, obj)
         elif isinstance(obj, ModelGroup):
+            print("line 52.")
             PCG_ROOT_LOGGER.info(
                 'Adding model group {} to world'.format(
                     obj.name))
+            print('Adding model group {} to world'.format(
+                    obj.name))
             return self._simulation_entity.add_model_group(obj, obj.name)
         elif isinstance(obj, Light):
+            print("line 53.")
             return self._simulation_entity.add_light(obj.name, obj)
         return False
 
@@ -322,54 +334,82 @@ class _Generator(object):
 
         `True` if all engines ran successfully.
         """
+        print("line 1.")
         if self._simulation_entity is None:
             self.init()
-
+        print("line 2.")
         init_random_state(self._seed)
-
+        print("line 3.")
         if self._engines.size == 0:
             PCG_ROOT_LOGGER.warning('No engines found')
             return False
+        print("line 4.")
         if not attach_models:
             self._simulation_entity.reset_models()
             PCG_ROOT_LOGGER.info('List of models is now empty')
+        print("line 5.")
         self._engines.reset_engines()
-
+        print("line 6.")
         models = list()
+        print("line 7.")
         # Run the fixed pose engines first
         PCG_ROOT_LOGGER.info('Run fixed-pose engines')
         for tag in self._engines.tags:
+            print(tag)
+            print("line 8.")
             engine = self._engines.get(tag)
+            # print(engine)
+            print(type(engine))
+            print("line 9.")
             if engine.label == 'fixed_pose':
+                print("line 10.")
                 models = engine.run()
+                print("line 11.")
                 if models is not None:
                     for model in models:
+                        print("line 12.")
                         if not self._add_asset_to_simulation_entity(model):
+                            print("line 13.")
                             PCG_ROOT_LOGGER.error(
                                 'Cannot add asset <{}>'.format(
                                     model.name))
+        print("line 14.")
         # Run all other engines
         PCG_ROOT_LOGGER.info('Run other engines')
         for tag in self._engines.tags:
+            print("line 15.")
             engine = self._engines.get(tag)
+            print("line 16.")
             if engine.label != 'fixed_pose':
+                print("line 17.")
                 PCG_ROOT_LOGGER.info(
                     'Running engine, type={}'.format(
                         engine.label))
                 for item in list(self._simulation_entity.models.values()):
+                    print("line 18.")
                     engine.set_fixed_pose_model(item)
+                print("line 19.")
                 models = engine.run()
+                print("line 20.")
                 if models is not None:
                     for model in models:
+                        print("line 21.")
                         if not self._add_asset_to_simulation_entity(model):
+                            print("line 22.")
                             PCG_ROOT_LOGGER.error(
                                 'Cannot add asset <{}>'.format(
                                     model.name))
-
-        PCG_ROOT_LOGGER.info(
-            'Model placement finished, # models={}, model_names={}'.format(
-                len(self._simulation_entity.models),
-                list(self._simulation_entity.models.keys())))
+        print("line 23.")
+        flength = len(self._simulation_entity.models)
+        flist = list(self._simulation_entity.models.keys())
+        # PCG_ROOT_LOGGER.info(
+        #     'Model placement finished, # models={}, model_names={}'.format(
+        #         len(self._simulation_entity.models),
+        #         list(self._simulation_entity.models.keys())))
+        print('Model placement finished, # models={}, model_names={}'.format(
+                flength,
+                flist))
+        print("line 24.")
         return True
 
     def init(self):

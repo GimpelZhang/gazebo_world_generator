@@ -893,8 +893,18 @@ def store_fig_as_pgm(output_folder, output_filename, canvas):
 
     # Retrieve the figure's size
     ncols, nrows = canvas.get_width_height()
+    print(type(canvas))
+    canvas_string_length = np.fromstring(
+        canvas.tostring_rgb(),
+        dtype=np.uint8).size
+    print("get_width_height:  ",ncols,nrows)
+    print(canvas_string_length)
 
     # Read the RGB values from the plot image
+    # TEMP TEMP TEMP
+    if canvas_string_length>ncols*nrows*3:
+        ncols = ncols+40
+        nrows = nrows+40
     im = np.fromstring(
         canvas.tostring_rgb(),
         dtype=np.uint8).reshape(

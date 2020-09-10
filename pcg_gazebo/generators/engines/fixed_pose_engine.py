@@ -98,32 +98,49 @@ class FixedPoseEngine(Engine):
 
         List of `pcg_gazebo.simulation.SimulationModel`: Model instances.
         """
+        print("line 25.")
         if len(self.models) == 0:
+            print("line 26.")
             self._logger.error('No model was provided for fixed pose engine')
             return None
+        print("line 27.")
         models = list()
         for pose in self._poses[self._models[0]]:
+            print("line 28.")
             model = self._get_model(self._models[0])
+            print(model)
+            print(type(model))
             if model is None:
+                print("line 29.")
                 self._logger.error(
                     'Cannot spawn model <{}>'.format(
                         self._models[0]))
                 return None
-
+            print("line 30.")
             pose = [float(x) for x in list(pose.position) + list(pose.quat)]
+            print(pose)
             model.pose = pose
             # Enforce local constraints
+            print("line 31.")
             model = self.apply_local_constraints(model)
+            print("line 32.")
             models.append(model)
+            print("line 33.")
             self._logger.info('Adding model {}'.format(model.name))
             self._logger.info('\t {}'.format(model.pose))
 
         # Add models to collision checker
         for model in models:
+            print("line 34.")
             if not isinstance(model, Light):
+                print("line 35.")
                 self._collision_checker.add_fixed_model(model)
+                print("line 36.")
                 self._logger.info(
                     'Adding model <{}> as fixed model '
+                    'in the collision checker'.format(
+                        model.name))
+                print('Adding model <{}> as fixed model '
                     'in the collision checker'.format(
                         model.name))
         return models

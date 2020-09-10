@@ -35,6 +35,7 @@ class ODE(Physics):
             real_time_update_rate=real_time_update_rate,
             max_contacts=max_contacts,
             engine='ode')
+        print("line 92.")
 
         assert min_step_size > 0
         assert iters > 0

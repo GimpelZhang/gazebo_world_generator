@@ -49,15 +49,21 @@ class AssetsManager(_CollectionManager):
     @staticmethod
     def get_instance():
         """Return singleton instance of the `AssetsMananger`"""
+        print("line 104.")
         if AssetsManager._INSTANCE is None:
+            print("line 105.")
             AssetsManager._INSTANCE = AssetsManager()
+            print("line 106.")
+        print("line 107.")
         AssetsManager._INSTANCE.init()
+        print("line 108.")
         return AssetsManager._INSTANCE
 
     @property
     def tags(self):
         """`list`: List of strings with all asset tags"""
         from ..simulation import get_gazebo_model_names
+        print("line 109.")
         return list(self._collection.keys()) + list(get_gazebo_model_names())
 
     @property
@@ -67,10 +73,15 @@ class AssetsManager(_CollectionManager):
 
     def init(self):
         if 'sun' not in self.tags:
+            print("line 96.")
             self.add(description=Sun(), tag='sun')
+            print("line 97.")
         if 'ground_plane' not in self.tags:
+            print("line 98.")
             self.add(description=GroundPlane(), tag='ground_plane')
+            print("line 99.")
             self.set_asset_as_ground_plane('ground_plane')
+            print("line 100.")
 
     def is_model(self, tag):
         """Return if asset identified by `tag` is an instance of
@@ -306,26 +317,39 @@ class AssetsManager(_CollectionManager):
         `pcg_gazebo.simulation.SimulationModel` or
         `pcg_gazebo.simulation.ModelGroup`. `None`, if `tag` is invalid.
         """
+        print("line 37.")
         model = None
         if self.is_factory_input(tag):
+            print("line 38.")
             from ..generators.creators import config2models
+            print("line 39.")
             model = SimulationModel.from_sdf(
                 config2models(self._collection[tag])[0])
+            print("line 40.")
             model.name = tag
         elif self.is_model_group_generator(tag):
+            print("line 41.")
             model = self._collection[tag].run(group_name=tag, *args, **kwargs)
+            print("line 42.")
         elif self.is_model(tag) or self.is_light(tag):
+            print("line 43.")
             model = self._collection[tag].copy()
+            print("line 44.")
         elif self.is_model_group(tag):
+            print("line 45.")
             return self._collection[tag]
         elif self.is_gazebo_model(tag):
+            print("line 46.")
             model = None
             try:
+                print("line 47.")
                 model = SimulationModel.from_gazebo_model(tag)
+                print("line 48.")
             except ValueError:
                 model = ModelGroup.from_gazebo_model(tag)
 
         if model is not None and not self.is_light(tag):
+            print("line 49.")
             model.is_ground_plane = self.is_ground_plane(tag)
         return model
 
