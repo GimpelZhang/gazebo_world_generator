@@ -1,0 +1,1801 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Scripts - Procedural Generation for Gazebo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#pcg-generate-occupancy-map" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="Procedural Generation for Gazebo" aria-label="Procedural Generation for Gazebo" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Procedural Generation for Gazebo
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Scripts
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/boschresearch/pcg_gazebo/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    boschresearch/pcg_gazebo
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../install/" class="md-tabs__link md-tabs__link--active">
+          Documentation
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../single_room_generation/" class="md-tabs__link">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../reference/log/" class="md-tabs__link">
+          API Documentation
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Procedural Generation for Gazebo" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Procedural Generation for Gazebo
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/boschresearch/pcg_gazebo/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    boschresearch/pcg_gazebo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      Documentation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Advanced Installation" class="md-nav__link">
+      Advanced Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Scripts
+      </label>
+    
+    <a href="./" title="Scripts" class="md-nav__link md-nav__link--active">
+      Scripts
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-occupancy-map" class="md-nav__link">
+    pcg-generate-occupancy-map
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-sample-world-with-walls" class="md-nav__link">
+    pcg-generate-sample-world-with-walls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-world" class="md-nav__link">
+    pcg-generate-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-inspect-asset" class="md-nav__link">
+    pcg-inspect-asset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-install-gazebo-assets" class="md-nav__link">
+    pcg-install-gazebo-assets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-list-gazebo-models" class="md-nav__link">
+    pcg-list-gazebo-models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-populate-world" class="md-nav__link">
+    pcg-populate-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-preview-sdf" class="md-nav__link">
+    pcg-preview-sdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-preview-urdf" class="md-nav__link">
+    pcg-preview-urdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-print-xml-element" class="md-nav__link">
+    pcg-print-xml-element
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-process-jinja-template" class="md-nav__link">
+    pcg-process-jinja-template
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-run-model-factory" class="md-nav__link">
+    pcg-run-model-factory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-sdf2urdf" class="md-nav__link">
+    pcg-sdf2urdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-sdflint" class="md-nav__link">
+    pcg-sdflint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-spawn-sdf-model" class="md-nav__link">
+    pcg-spawn-sdf-model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-start-gazebo-world" class="md-nav__link">
+    pcg-start-gazebo-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-urdf2sdf" class="md-nav__link">
+    pcg-urdf2sdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-urdflint" class="md-nav__link">
+    pcg-urdflint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-view-gazebo-model" class="md-nav__link">
+    pcg-view-gazebo-model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-view-mesh" class="md-nav__link">
+    pcg-view-mesh
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../single_room_generation/" title="Single Room Generation" class="md-nav__link">
+      Single Room Generation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/" title="Examples" class="md-nav__link">
+      Examples
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      API Documentation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        API Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/log/" title="pcg_gazebo.log" class="md-nav__link">
+      pcg_gazebo.log
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/path/" title="pcg_gazebo.path" class="md-nav__link">
+      pcg_gazebo.path
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/visualization/" title="pcg_gazebo.visualization" class="md-nav__link">
+      pcg_gazebo.visualization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      pcg_gazebo.simulation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        pcg_gazebo.simulation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation/" title="pcg_gazebo.simulation" class="md-nav__link">
+      pcg_gazebo.simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_physics/" title="pcg_gazebo.simulation.physics" class="md-nav__link">
+      pcg_gazebo.simulation.physics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_properties/" title="pcg_gazebo.simulation.properties" class="md-nav__link">
+      pcg_gazebo.simulation.properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_sensors/" title="pcg_gazebo.simulation.sensors" class="md-nav__link">
+      pcg_gazebo.simulation.sensors
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      pcg_gazebo.parsers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        pcg_gazebo.parsers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers/" title="pcg_gazebo.parsers" class="md-nav__link">
+      pcg_gazebo.parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_sdf/" title="pcg_gazebo.parsers.sdf" class="md-nav__link">
+      pcg_gazebo.parsers.sdf
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_sdf_config/" title="pcg_gazebo.parsers.sdf_config" class="md-nav__link">
+      pcg_gazebo.parsers.sdf_config
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_types/" title="pcg_gazebo.parsers.types" class="md-nav__link">
+      pcg_gazebo.parsers.types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_urdf/" title="pcg_gazebo.parsers.urdf" class="md-nav__link">
+      pcg_gazebo.parsers.urdf
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_gazebo/" title="pcg_gazebo.parsers.gazebo" class="md-nav__link">
+      pcg_gazebo.parsers.gazebo
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/task_manager/" title="pcg_gazebo.task_manager" class="md-nav__link">
+      pcg_gazebo.task_manager
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-7" type="checkbox" id="nav-4-7">
+    
+    <label class="md-nav__link" for="nav-4-7">
+      pcg_gazebo.generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-7">
+        pcg_gazebo.generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators/" title="pcg_gazebo.generators" class="md-nav__link">
+      pcg_gazebo.generators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_components/" title="pcg_gazebo.generators.components" class="md-nav__link">
+      pcg_gazebo.generators.components
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_constraints/" title="pcg_gazebo.generators.constraints" class="md-nav__link">
+      pcg_gazebo.generators.constraints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_engines/" title="pcg_gazebo.generators.engines" class="md-nav__link">
+      pcg_gazebo.generators.engines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_item_pickers/" title="pcg_gazebo.generators.item_pickers" class="md-nav__link">
+      pcg_gazebo.generators.item_pickers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_rules/" title="pcg_gazebo.generators.rules" class="md-nav__link">
+      pcg_gazebo.generators.rules
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-occupancy-map" class="md-nav__link">
+    pcg-generate-occupancy-map
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-sample-world-with-walls" class="md-nav__link">
+    pcg-generate-sample-world-with-walls
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-generate-world" class="md-nav__link">
+    pcg-generate-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-inspect-asset" class="md-nav__link">
+    pcg-inspect-asset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-install-gazebo-assets" class="md-nav__link">
+    pcg-install-gazebo-assets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-list-gazebo-models" class="md-nav__link">
+    pcg-list-gazebo-models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-populate-world" class="md-nav__link">
+    pcg-populate-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-preview-sdf" class="md-nav__link">
+    pcg-preview-sdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-preview-urdf" class="md-nav__link">
+    pcg-preview-urdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-print-xml-element" class="md-nav__link">
+    pcg-print-xml-element
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-process-jinja-template" class="md-nav__link">
+    pcg-process-jinja-template
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-run-model-factory" class="md-nav__link">
+    pcg-run-model-factory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-sdf2urdf" class="md-nav__link">
+    pcg-sdf2urdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-sdflint" class="md-nav__link">
+    pcg-sdflint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-spawn-sdf-model" class="md-nav__link">
+    pcg-spawn-sdf-model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-start-gazebo-world" class="md-nav__link">
+    pcg-start-gazebo-world
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-urdf2sdf" class="md-nav__link">
+    pcg-urdf2sdf
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-urdflint" class="md-nav__link">
+    pcg-urdflint
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-view-gazebo-model" class="md-nav__link">
+    pcg-view-gazebo-model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcg-view-mesh" class="md-nav__link">
+    pcg-view-mesh
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/boschresearch/pcg_gazebo/edit/master/docs/scripts.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Scripts</h1>
+                
+                <p>Executable scripts installed with the <code>pcg_gazebo</code> package for command line actions.</p>
+<h4 id="pcg-generate-occupancy-map"><code>pcg-generate-occupancy-map</code><a class="headerlink" href="#pcg-generate-occupancy-map" title="Permanent link">&para;</a></h4>
+<p>Generates an occupancy grid map file in <code>.pgm</code> format from a <code>.world</code> file.
+The world can be provided either as a ROS topic or a file.
+Run <code>generate_occupancy_map -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-generate-occupancy-map -h
+usage: Generate occupancy grid map from a SDF world file or the current scenario in Gazebo
+       <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--world-file WORLD_FILE<span class="o">]</span> <span class="o">[</span>--input-topic INPUT_TOPIC<span class="o">]</span> <span class="o">[</span>--xml XML<span class="o">]</span>
+       <span class="o">[</span>--from-simulation<span class="o">]</span> <span class="o">[</span>--z-levels Z_LEVELS <span class="o">[</span>Z_LEVELS ...<span class="o">]]</span>
+       <span class="o">[</span>--min-z MIN_Z<span class="o">]</span> <span class="o">[</span>--max-z MAX_Z<span class="o">]</span> <span class="o">[</span>--without-ground-plane<span class="o">]</span>
+       <span class="o">[</span>--occupied-color OCCUPIED_COLOR<span class="o">]</span> <span class="o">[</span>--free-color FREE_COLOR<span class="o">]</span>
+       <span class="o">[</span>--unavailable-color UNAVAILABLE_COLOR<span class="o">]</span> <span class="o">[</span>--output-dir OUTPUT_DIR<span class="o">]</span>
+       <span class="o">[</span>--output-filename OUTPUT_FILENAME<span class="o">]</span> <span class="o">[</span>--static-models-only<span class="o">]</span> <span class="o">[</span>--dpi DPI<span class="o">]</span>
+       <span class="o">[</span>--figure-width FIGURE_WIDTH<span class="o">]</span> <span class="o">[</span>--figure-height FIGURE_HEIGHT<span class="o">]</span>
+       <span class="o">[</span>--figure-size-unit FIGURE_SIZE_UNIT<span class="o">]</span>
+       <span class="o">[</span>--exclude-contains EXCLUDE_CONTAINS <span class="o">[</span>EXCLUDE_CONTAINS ...<span class="o">]]</span>
+       <span class="o">[</span>--ground-plane-models GROUND_PLANE_MODELS <span class="o">[</span>GROUND_PLANE_MODELS ...<span class="o">]]</span>
+       <span class="o">[</span>--map-x-limits MAP_X_LIMITS <span class="o">[</span>MAP_X_LIMITS ...<span class="o">]]</span>
+       <span class="o">[</span>--map-y-limits MAP_Y_LIMITS <span class="o">[</span>MAP_Y_LIMITS ...<span class="o">]]</span> <span class="o">[</span>--use-visual<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --world-file WORLD_FILE, -w WORLD_FILE
+                        SDF world filename
+  --input-topic INPUT_TOPIC
+                        Receive world XML file per ROS topic
+  --xml XML             Receive world XML as string
+  --from-simulation, -s
+                        Retrieve world description from the current Gazebo
+                        simulation
+  --z-levels Z_LEVELS <span class="o">[</span>Z_LEVELS ...<span class="o">]</span>, -l Z_LEVELS <span class="o">[</span>Z_LEVELS ...<span class="o">]</span>
+                        Z levels to compute the grid map from
+  --min-z MIN_Z         Minimum height <span class="k">for</span> the Z rays in the ray tracing grid
+  --max-z MAX_Z         Maximum height <span class="k">for</span> the Z rays in the ray tracing grid
+  --without-ground-plane
+                        Ignore ground plane meshes from the map
+  --occupied-color OCCUPIED_COLOR
+                        Gray-scale color of the occupied cells
+  --free-color FREE_COLOR
+                        Gray-scale color of the free cells
+  --unavailable-color UNAVAILABLE_COLOR
+                        Gray-scale color of the unavailable cells
+  --output-dir OUTPUT_DIR
+                        Output directory to store the map
+  --output-filename OUTPUT_FILENAME
+                        Name of the output map file
+  --static-models-only  Uses only static models <span class="k">for</span> the map construction
+  --dpi DPI             Figure DPI
+  --figure-width FIGURE_WIDTH
+                        Width of the figure
+  --figure-height FIGURE_HEIGHT
+                        Height of the figure
+  --figure-size-unit FIGURE_SIZE_UNIT
+                        Figure size unit <span class="o">[</span>cm, m or inch<span class="o">]</span>
+  --exclude-contains EXCLUDE_CONTAINS <span class="o">[</span>EXCLUDE_CONTAINS ...<span class="o">]</span>
+                        List of keywords <span class="k">for</span> model names to be excluded from
+                        the map
+  --ground-plane-models GROUND_PLANE_MODELS <span class="o">[</span>GROUND_PLANE_MODELS ...<span class="o">]</span>
+                        List of models that will be considered ground plane
+  --map-x-limits MAP_X_LIMITS <span class="o">[</span>MAP_X_LIMITS ...<span class="o">]</span>
+                        X limits of the output map in meters
+  --map-y-limits MAP_Y_LIMITS <span class="o">[</span>MAP_Y_LIMITS ...<span class="o">]</span>
+                        Y limits of the output map in meters
+  --use-visual          Use visual meshes instead of collision
+</code></pre></div>
+
+<h4 id="pcg-generate-sample-world-with-walls"><code>pcg-generate-sample-world-with-walls</code><a class="headerlink" href="#pcg-generate-sample-world-with-walls" title="Permanent link">&para;</a></h4>
+<p>Generates a single room with walls with the option to add mesh primitives (e.g. cuboids, cylinders and spheres) to populate it.
+The wall Gazebo model is per default stored in the local <code>$HOME/.gazebo/models</code> and the world file in <code>$HOME/.gazebo/worlds</code>, but both destinations can be configured.</p>
+<div class="codehilite"><pre><span></span><code>pcg-generate-sample-world-with-walls -h
+usage: pcg-generate-sample-world-with-walls <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--n-rectangles N_RECTANGLES<span class="o">]</span>
+                                            <span class="o">[</span>--n-points N_POINTS<span class="o">]</span>
+                                            <span class="o">[</span>--wall-thickness WALL_THICKNESS<span class="o">]</span>
+                                            <span class="o">[</span>--wall-height WALL_HEIGHT<span class="o">]</span>
+                                            <span class="o">[</span>--n-cubes N_CUBES<span class="o">]</span>
+                                            <span class="o">[</span>--n-cylinders N_CYLINDERS<span class="o">]</span>
+                                            <span class="o">[</span>--n-spheres N_SPHERES<span class="o">]</span>
+                                            <span class="o">[</span>--set-random-roll<span class="o">]</span>
+                                            <span class="o">[</span>--set-random-pitch<span class="o">]</span>
+                                            <span class="o">[</span>--x-room-range X_ROOM_RANGE<span class="o">]</span>
+                                            <span class="o">[</span>--y-room-range Y_ROOM_RANGE<span class="o">]</span>
+                                            <span class="o">[</span>--world-name WORLD_NAME<span class="o">]</span>
+                                            <span class="o">[</span>--export-world-dir EXPORT_WORLD_DIR<span class="o">]</span>
+                                            <span class="o">[</span>--export-models-dir EXPORT_MODELS_DIR<span class="o">]</span>
+                                            <span class="o">[</span>--preview<span class="o">]</span>
+
+Generates a sample world with walls and objects as primitives
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --n-rectangles N_RECTANGLES, -r N_RECTANGLES
+                        Number of rectangles to merge to generate the room
+  --n-points N_POINTS, -p N_POINTS
+                        Number of points to triangulate to generate the room
+  --wall-thickness WALL_THICKNESS, -t WALL_THICKNESS
+                        Thickness of the walls
+  --wall-height WALL_HEIGHT, -g WALL_HEIGHT
+                        Height of the walls
+  --n-cubes N_CUBES, -c N_CUBES
+                        Number of cubes to place in the world
+  --n-cylinders N_CYLINDERS, -l N_CYLINDERS
+                        Number of cylinders to place in the world
+  --n-spheres N_SPHERES, -s N_SPHERES
+                        Number of spheres to place in the world
+  --set-random-roll     Set the roll angle of the placed objects with a random
+                        variable
+  --set-random-pitch    Set the pitch angle of the placed objects with a
+                        random variable
+  --x-room-range X_ROOM_RANGE, -x X_ROOM_RANGE
+                        Range in X to generate the rectangles or points
+  --y-room-range Y_ROOM_RANGE, -y Y_ROOM_RANGE
+                        Range in Y to generate the rectangles or points
+  --world-name WORLD_NAME, -n WORLD_NAME
+                        Name of output world
+  --export-world-dir EXPORT_WORLD_DIR
+                        Export the world
+  --export-models-dir EXPORT_MODELS_DIR
+                        Export the models generated
+  --preview             Show 3D preview of the created world
+
+Usage:
+    pcg-generate-sample-world-with-walls --n-rectangles <span class="m">1</span>
+    pcg-generate-sample-world-with-walls --n-rectangles <span class="m">10</span>
+    pcg-generate-sample-world-with-walls --n-points <span class="m">20</span>
+    pcg-generate-sample-world-with-walls --n-rectangles <span class="m">10</span> --n-cubes <span class="m">5</span> --n-spheres <span class="m">5</span> --n-cylinders <span class="m">5</span>
+    pcg-generate-sample-world-with-walls --n-rectangles <span class="m">10</span> --n-cubes <span class="m">5</span> --n-spheres <span class="m">5</span> --n-cylinders <span class="m">5</span> --set-random-roll --set-random-pitch
+    pcg-generate-sample-world-with-walls --n-points <span class="m">20</span> --n-cubes <span class="m">10</span> --preview
+</code></pre></div>
+
+<h4 id="pcg-generate-world"><code>pcg-generate-world</code><a class="headerlink" href="#pcg-generate-world" title="Permanent link">&para;</a></h4>
+<p>Generates a Gazebo world file from YAML configuration describing the rules for placement of objects, assets to be used and spatial constraints.</p>
+<div class="codehilite"><pre><span></span><code>pcg-generate-world -h
+usage: Generate the world using the PCG model placement engines
+       <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--config-file CONFIG_FILE<span class="o">]</span>
+       <span class="o">[</span>--output-world-file OUTPUT_WORLD_FILE<span class="o">]</span> <span class="o">[</span>--verbose<span class="o">]</span> <span class="o">[</span>--plot<span class="o">]</span>
+       <span class="o">[</span>--plot-width PLOT_WIDTH<span class="o">]</span> <span class="o">[</span>--plot-height PLOT_HEIGHT<span class="o">]</span>
+       <span class="o">[</span>--output-topic OUTPUT_TOPIC<span class="o">]</span> <span class="o">[</span>--with-sun<span class="o">]</span> <span class="o">[</span>--with-ground-plane<span class="o">]</span>
+       <span class="o">[</span>--run<span class="o">]</span> <span class="o">[</span>--physics PHYSICS<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --config-file CONFIG_FILE
+                        Configuration file <span class="o">(</span>YAML format<span class="o">)</span> with the PCG engines
+                        specification and assets lists
+  --output-world-file OUTPUT_WORLD_FILE
+                        Output SDF world file
+  --verbose             Set the output of the world generator as verbose
+  --plot                Create bokeh plot of the object and workspace
+                        footprints
+  --plot-width PLOT_WIDTH
+                        Width of the plot
+  --plot-height PLOT_HEIGHT
+                        Height of the plot
+  --output-topic OUTPUT_TOPIC
+                        Optional output topic to publish the resulting XML
+  --with-sun            Add default sun model to world
+  --with-ground-plane   Add default ground_plane model to world
+  --run                 Run Gazebo with the generated world
+  --physics PHYSICS     Physics engine to start with Gazebo
+</code></pre></div>
+
+<blockquote>
+<p>Examples</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/launch_pcg_world.sh"><code>launch_pcg_world</code> script</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/tree/master/examples/world_generator/worlds">Samples of world configuration files</a></li>
+</ul>
+<h4 id="pcg-inspect-asset"><code>pcg-inspect-asset</code><a class="headerlink" href="#pcg-inspect-asset" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code>pcg-inspect-asset -h
+usage: List all elements from a model or world <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span>
+                                               <span class="o">[</span>--gazebo-model GAZEBO_MODEL<span class="o">]</span>
+                                               <span class="o">[</span>--print-xml<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --filename FILENAME, -f FILENAME
+  --gazebo-model GAZEBO_MODEL, -g GAZEBO_MODEL
+  --print-xml, -p
+</code></pre></div>
+
+<h4 id="pcg-install-gazebo-assets"><code>pcg-install-gazebo-assets</code><a class="headerlink" href="#pcg-install-gazebo-assets" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code>pcg-install-gazebo-assets -h
+usage: pcg-install-gazebo-assets <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--tarball TARBALL<span class="o">]</span> <span class="o">[</span>--dir DIR<span class="o">]</span>
+                                 <span class="o">[</span>--filename FILENAME<span class="o">]</span>
+                                 <span class="o">[</span>--models-path MODELS_PATH<span class="o">]</span> <span class="o">[</span>--add-timestamp<span class="o">]</span>
+                                 <span class="o">[</span>--prefix PREFIX<span class="o">]</span> <span class="o">[</span>--name NAME<span class="o">]</span>
+
+Open and install Gazebo assets <span class="o">(</span>media, models and world<span class="o">)</span> in the default Gazebo resource paths &lt;<span class="nv">$HOME</span>/.gazebo&gt;
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --tarball TARBALL, -t TARBALL
+                        Filename of the tarball containing the simulation
+                        assets. The tarball must contain either <span class="o">(</span><span class="m">1</span><span class="o">)</span> a Gazebo
+                        model, including at least model.config and model.sdf
+                        files or <span class="o">(</span><span class="m">2</span><span class="o">)</span> a models and/or a worlds folder
+  --dir DIR, -d DIR     A folder containing <span class="o">(</span><span class="m">1</span><span class="o">)</span> a Gazebo model, including at
+                        least model.config and model.sdf files or <span class="o">(</span><span class="m">2</span><span class="o">)</span> a models
+                        and/or a worlds folder
+  --filename FILENAME, -f FILENAME
+                        A SDF, URDF or XACRO file to be installed as a Gazebo
+                        model or world
+  --models-path MODELS_PATH, -m MODELS_PATH
+                        Optional custom models path necessary <span class="k">for</span> parsing the
+                        asset to be installed
+  --add-timestamp, -a   Adds timestamp to the asset name as a suffix
+  --prefix PREFIX, -p PREFIX
+                        Prefix string to be added to the asset name installed
+  --name NAME, -n NAME  New name of the asset to be installed
+
+Usage:
+        pcg-install-gazebo-assets --tarball FILENAME
+        pcg-install-gazebo-assets --filename FILENAME
+        pcg-install-gazebo-assets --dir FOLDER --prefix PREFIX --add-timestamp --name NEW_ASSET_NAME
+        pcg-install-gazebo-assets --tarball FILENAME --prefix PREFIX --add-timestamp
+</code></pre></div>
+
+<h4 id="pcg-list-gazebo-models"><code>pcg-list-gazebo-models</code><a class="headerlink" href="#pcg-list-gazebo-models" title="Permanent link">&para;</a></h4>
+<p>Lists all the static Gazebo models found in the ROS paths and <code>$HOME/.gazebo/models</code>.</p>
+<blockquote>
+<p>Example </p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>$ pcg-list-gazebo-models
+</code></pre></div>
+
+<h4 id="pcg-populate-world"><code>pcg-populate-world</code><a class="headerlink" href="#pcg-populate-world" title="Permanent link">&para;</a></h4>
+<div class="codehilite"><pre><span></span><code>pcg-populate-world -h
+usage: pcg-populate-world <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--world WORLD<span class="o">]</span> <span class="o">[</span>--config CONFIG<span class="o">]</span>
+                          <span class="o">[</span>--model MODEL <span class="o">[</span>MODEL ...<span class="o">]]</span> <span class="o">[</span>--num NUM <span class="o">[</span>NUM ...<span class="o">]]</span>
+                          <span class="o">[</span>--min-distance MIN_DISTANCE <span class="o">[</span>MIN_DISTANCE ...<span class="o">]]</span>
+                          <span class="o">[</span>--static STATIC <span class="o">[</span>STATIC ...<span class="o">]]</span>
+                          <span class="o">[</span>--export-filename EXPORT_FILENAME<span class="o">]</span>
+                          <span class="o">[</span>--custom-models-path CUSTOM_MODELS_PATH <span class="o">[</span>CUSTOM_MODELS_PATH ...<span class="o">]]</span>
+                          <span class="o">[</span>--random-roll<span class="o">]</span> <span class="o">[</span>--random-pitch<span class="o">]</span> <span class="o">[</span>--random-yaw<span class="o">]</span>
+                          <span class="o">[</span>--workspace WORKSPACE<span class="o">]</span> <span class="o">[</span>--tangent-to-ground<span class="o">]</span>
+                          <span class="o">[</span>--preview<span class="o">]</span>
+
+This script will either take a Gazebo world <span class="o">(</span>or use an empty one <span class="k">if</span> none is provided<span class="o">)</span> and populate it w
+ith models placed within a workspace.The workspace can be either provided as a <span class="nb">set</span> of 2D or 3D points, 
+the convex hull of the models in the world, or the free space found in the world grid map.
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --world WORLD, -w WORLD
+                        Gazebo world as file or XML input to be populated
+  --config CONFIG, -c CONFIG
+                        YAML file with the configuration <span class="k">for</span> engines and
+                        models to be added to the world
+  --model MODEL <span class="o">[</span>MODEL ...<span class="o">]</span>, -m MODEL <span class="o">[</span>MODEL ...<span class="o">]</span>
+                        Name of Gazebo model to include in the world
+  --num NUM <span class="o">[</span>NUM ...<span class="o">]</span>, -n NUM <span class="o">[</span>NUM ...<span class="o">]</span>
+                        Number of elements to add to world <span class="o">(</span>use -1 <span class="k">if</span> no
+                        maximum limit is necessary<span class="o">)</span>
+  --min-distance MIN_DISTANCE <span class="o">[</span>MIN_DISTANCE ...<span class="o">]</span>, -d MIN_DISTANCE <span class="o">[</span>MIN_DISTANCE ...<span class="o">]</span>
+                        Minimum distance between objects <span class="o">(</span>either <span class="k">for</span> all
+                        models or per model
+  --static STATIC <span class="o">[</span>STATIC ...<span class="o">]</span>, -s STATIC <span class="o">[</span>STATIC ...<span class="o">]</span>
+                        Whether the model should be static or not
+  --export-filename EXPORT_FILENAME, -f EXPORT_FILENAME
+                        Name of the filename to <span class="nb">export</span> the generated world. If
+                        none is provided, the same filename with a datetime
+                        suffix will be used.
+  --custom-models-path CUSTOM_MODELS_PATH <span class="o">[</span>CUSTOM_MODELS_PATH ...<span class="o">]</span>, -p CUSTOM_MODELS_PATH <span class="o">[</span>CUSTOM_MODELS_PATH ...<span class="o">]</span>
+                        Custom folder containing Gazebo models
+  --random-roll         For random engines, the roll angle will also be
+                        randomized
+  --random-pitch        For random engines, the pitch angle will also be
+                        randomized
+  --random-yaw          For random engines, the yaw angle will also be
+                        randomized
+  --workspace WORKSPACE, -k WORKSPACE
+                        Name of model or <span class="nb">set</span> of coordinates provided as <span class="o">(</span><span class="m">1</span><span class="o">)</span>
+                        <span class="o">[(</span>x, y, z<span class="o">)</span>, <span class="o">(</span>x, y, z<span class="o">)</span>, ...<span class="o">]</span> <span class="k">for</span> a 3D workpace, <span class="o">(</span><span class="m">2</span><span class="o">)</span>
+                        <span class="o">[(</span>x, y<span class="o">)</span>, <span class="o">(</span>x, y<span class="o">)</span>, ...<span class="o">]</span> <span class="k">for</span> a 2D workspace, <span class="o">(</span><span class="m">3</span><span class="o">)</span> name of
+                        models in the provided world that delimit the
+                        workspace <span class="o">(</span>e.g. walls<span class="o">)</span>. <span class="o">(</span><span class="m">4</span><span class="o">)</span> <span class="s2">&quot;gridmap&quot;</span> to compute a
+                        grid map of the input world and place objects in the
+                        free space foundIf no workspace is defined and there
+                        is a world with models provided, the workspace will be
+                        the convex hull around all existing models. If no
+                        world is provided, an area of <span class="m">20</span> x <span class="m">20</span> m on the ground
+                        plane will be <span class="nb">set</span> as the workspace
+  --tangent-to-ground, -t
+                        Place all models tangent to the ground plane
+  --preview             Preview the workspace and generated world
+
+    pcg-populate-world --model MODEL_1 MODEL_2 --num <span class="m">3</span> <span class="m">3</span> --min-distance <span class="m">0</span>.2 --static <span class="m">1</span>  <span class="c1"># Models 1 and 2 must be Gazebo models</span>
+    pcg-populate-world --model random_box --num <span class="m">2</span>  <span class="c1"># Add two random boxes to an empty world</span>
+    pcg-populate-world --model random_box random_cylinder random_sphere --num -1 -1 -1 --tangent-to-ground  <span class="c1"># Add as many random boxes, cylinders and spheres as possible in the default workspace and place them tangent to the ground plane</span>
+    pcg-populate-world --model MESH_FILENAME --num <span class="m">1</span>  <span class="c1"># Add mesh as model in the world</span>
+    pcg-populate-world --world WORLD_FILE --model MODEL_1 --num <span class="m">5</span>  <span class="c1"># Add MODEL_1 to world loaded from file</span>
+</code></pre></div>
+
+<h4 id="pcg-preview-sdf"><code>pcg-preview-sdf</code><a class="headerlink" href="#pcg-preview-sdf" title="Permanent link">&para;</a></h4>
+<p>Opens a SDF file (either <code>.sdf</code> or <code>.world</code>) and shows a 3D preview of the geometries and meshes.
+The input SDF file must contain either a world or a model.
+Beware that if the world or model includes another model or meshes using the prefixes <code>model://</code>, that
+the included models must be in the Gazebo resources path so that they can be also parsed.</p>
+<div class="codehilite"><pre><span></span><code>pcg-preview-sdf -h
+usage: Parse a SDF file <span class="o">(</span>.sdf or .world<span class="o">)</span> and display its geometries and meshes
+       <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--collision<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --filename FILENAME, -f FILENAME
+                        SDF file <span class="o">(</span>.sdf or .world<span class="o">)</span>
+  --collision, -c       View collision meshes
+</code></pre></div>
+
+<blockquote>
+<p>Example</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>pcg-preview-sdf --filename SDF_FILENAME              <span class="c1"># Preview of the visual meshes</span>
+pcg-preview-sdf --filename SDF_FILENAME --collision  <span class="c1"># Preview of the collision meshes</span>
+</code></pre></div>
+
+<h4 id="pcg-preview-urdf"><code>pcg-preview-urdf</code><a class="headerlink" href="#pcg-preview-urdf" title="Permanent link">&para;</a></h4>
+<p>Opens an URDF file (<code>.urdf</code>) or a XACRO file (<code>.xacro</code>) that will be parsed into an URDF file, 
+and shows a 3D preview of the geometries and meshes.
+Beware that if the model includes meshes and includes other XACRO files, they should also
+be reachable within the ROS paths so that the model can be parsed.</p>
+<div class="codehilite"><pre><span></span><code>pcg-preview-urdf -h
+usage: Parse a URDF file and display its geometries and meshes. XACRO files can also be provided and will processed to generate the URDF files.
+       <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--collision<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --filename FILENAME, -f FILENAME
+                        URDF or XACRO file
+  --collision, -c       View collision meshes
+</code></pre></div>
+
+<blockquote>
+<p>Example</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>pcg-preview-urdf --filename URDF_OR_XACRO_FILENAME              <span class="c1"># Preview of the visual meshes</span>
+pcg-preview-urdf --filename URDF_OR_XACRO_FILENAME --collision  <span class="c1"># Preview of the collision meshes</span>
+</code></pre></div>
+
+<h4 id="pcg-print-xml-element"><code>pcg-print-xml-element</code><a class="headerlink" href="#pcg-print-xml-element" title="Permanent link">&para;</a></h4>
+<p>This tool can be called to retrieve information on SDF, URDF or SDF Config elements.
+They can be displayed in XML format or the script can list all the children and attributes of an XML element.</p>
+<div class="codehilite"><pre><span></span><code>pcg-print-xml-element -h
+usage: pcg-print-xml-element <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--sdf<span class="o">]</span> <span class="o">[</span>--urdf<span class="o">]</span> <span class="o">[</span>--sdf-config<span class="o">]</span> <span class="o">[</span>--tag TAG<span class="o">]</span>
+                             <span class="o">[</span>--list<span class="o">]</span> <span class="o">[</span>--xml<span class="o">]</span> <span class="o">[</span>--description<span class="o">]</span>
+
+Print XML elements <span class="o">(</span>SDF, URDF or SDF Config<span class="o">)</span>
+
+optional arguments:
+  -h, --help         show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --sdf              Retrieve information on SDF element
+  --urdf             Retrieve information on URDF element
+  --sdf-config       Retrieve information on SDF Config element
+  --tag TAG, -t TAG  Name of the XML element
+  --list, -l         List tags of all elements available
+  --xml, -x          Output the element as XML
+  --description, -d  Print information on the children of the XML element
+
+Usage:
+    pcg-print-xml-element --sdf --list
+    pcg-print-xml-element --urdf --list
+    pcg-print-xml-element --sdf-config --list
+    pcg-print-xml-element --sdf --tag NAME --xml
+    pcg-print-xml-element --sdf --tag NAME --description
+</code></pre></div>
+
+<blockquote>
+<p>Example </p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>pcg-print-xml-element --sdf --list
+pcg-print-xml-element --urdf --list
+pcg-print-xml-element --sdf-config --list
+pcg-print-xml-element --sdf --tag NAME --xml
+pcg-print-xml-element --sdf --tag NAME --description
+</code></pre></div>
+
+<h4 id="pcg-process-jinja-template"><code>pcg-process-jinja-template</code><a class="headerlink" href="#pcg-process-jinja-template" title="Permanent link">&para;</a></h4>
+<p>Generates a file from a Jinja template. 
+Run <code>pcg-process-jinja-template -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-process-jinja-template -h
+usage: pcg-process-jinja-template <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--input-template INPUT_TEMPLATE<span class="o">]</span>
+                                  <span class="o">[</span>--param-file PARAM_FILE<span class="o">]</span>
+                                  <span class="o">[</span>--output-filename OUTPUT_FILENAME<span class="o">]</span>
+                                  <span class="o">[</span>--include-dir INCLUDE_DIR<span class="o">]</span> <span class="o">[</span>--param PARAM<span class="o">]</span>
+                                  <span class="o">[</span>--sdf<span class="o">]</span> <span class="o">[</span>--sdf-config<span class="o">]</span> <span class="o">[</span>--urdf<span class="o">]</span>
+                                  <span class="o">[</span>--merge-nested-models<span class="o">]</span>
+
+Parse Jinja template
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --input-template INPUT_TEMPLATE, -i INPUT_TEMPLATE
+                        Input template file
+  --param-file PARAM_FILE, -f PARAM_FILE
+                        YAML file with parameters to be rendered in the final
+                        output
+  --output-filename OUTPUT_FILENAME, -o OUTPUT_FILENAME
+                        Output file to store the parsed file
+  --include-dir INCLUDE_DIR, -d INCLUDE_DIR
+                        Input directory <span class="k">for</span> template modules
+  --param PARAM, -p PARAM
+                        Model parameter to be replaced in the template
+  --sdf                 Output template is a SDF file and will be verified
+  --sdf-config          Output template is a SDF model configuration file and
+                        will be verified
+  --urdf                Output template is an URDF file and will be verified
+  --merge-nested-models
+                        For SDF descriptions, merge nested models before
+                        generating final SDF, in <span class="k">case</span> there are any
+</code></pre></div>
+
+<blockquote>
+<p>Examples</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/gen_model_from_template.sh"><code>gen_model_from_template</code> script</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/tree/master/examples/templates/models">Samples of model templates written in Jinja</a></li>
+</ul>
+<h4 id="pcg-run-model-factory"><code>pcg-run-model-factory</code><a class="headerlink" href="#pcg-run-model-factory" title="Permanent link">&para;</a></h4>
+<p>Runs a model factory function from the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/pcg_gazebo/generators/creators.py">creators</a> module using a YAML file input with the model description.
+Run <code>pcg-run-model-factory -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-run-model-factory -h
+usage: Imports a YAML file with the description of a model and/or description of the factory parameters to generate models procedurally
+       <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--config-file CONFIG_FILE<span class="o">]</span> <span class="o">[</span>--config CONFIG<span class="o">]</span> <span class="o">[</span>--print<span class="o">]</span>
+       <span class="o">[</span>--store-model<span class="o">]</span> <span class="o">[</span>--store-dir STORE_DIR<span class="o">]</span> <span class="o">[</span>--overwrite<span class="o">]</span> <span class="o">[</span>--spawn<span class="o">]</span>
+       <span class="o">[</span>--spawn-random-positions<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --config-file CONFIG_FILE, -f CONFIG_FILE
+                        YAML file with the model generator configuration
+  --config CONFIG, -c CONFIG
+                        Enter the configuration in the JSON format as a string
+  --print               Print models as SDF
+  --store-model         Store the generated models as Gazebo models
+  --store-dir STORE_DIR
+                        Output directory to store the generated models
+  --overwrite           Overwrite models with the same name when storing
+  --spawn               Spawn the generated models <span class="k">if</span> Gazebo is running
+  --spawn-random-positions
+                        Spawn models on random positions
+</code></pre></div>
+
+<blockquote>
+<p>Examples</p>
+</blockquote>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/gen_model_from_factory_config.sh"><code>gen_model_from_factory_config</code> script</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/tree/master/examples/model_factory">Samples of model factory configuration files</a></li>
+</ul>
+<h4 id="pcg-sdf2urdf"><code>pcg-sdf2urdf</code><a class="headerlink" href="#pcg-sdf2urdf" title="Permanent link">&para;</a></h4>
+<p>Converts a SDF file into an URDF file.
+Run <code>pcg-sdf2urdf -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-sdf2urdf -h
+usage: pcg-sdf2urdf <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--param PARAM<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--xml XML<span class="o">]</span>
+                    <span class="o">[</span>--input-topic INPUT_TOPIC<span class="o">]</span>
+                    <span class="o">[</span>--output-filename OUTPUT_FILENAME<span class="o">]</span>
+                    <span class="o">[</span>--output-parameter OUTPUT_PARAMETER<span class="o">]</span> <span class="o">[</span>--print<span class="o">]</span>
+                    <span class="o">[</span>--verbose<span class="o">]</span>
+
+Convert URDF to SDF file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --param PARAM, -p PARAM
+                        ROS parameter where the SDF robot description is
+                        stored
+  --filename FILENAME, -f FILENAME
+                        Filename name to the SDF robot description
+  --xml XML, -x XML     XML text input with the SDF robot description
+  --input-topic INPUT_TOPIC, -t INPUT_TOPIC
+                        ROS topic that will deliver the XML text input with
+                        the SDF robot description
+  --output-filename OUTPUT_FILENAME, -o OUTPUT_FILENAME
+                        Output file to store the converted URDF file
+  --output-parameter OUTPUT_PARAMETER, -r OUTPUT_PARAMETER
+                        Output ROS parameter to store the converted URDF file
+  --print               Print the file
+  --verbose, -v         Run on verbose mode
+</code></pre></div>
+
+<h4 id="pcg-sdflint"><code>pcg-sdflint</code><a class="headerlink" href="#pcg-sdflint" title="Permanent link">&para;</a></h4>
+<p>Checks a SDF file for errors.
+Run <code>pcg-sdflint -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-sdflint -h
+usage: pcg-sdflint <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--param PARAM<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--xml XML<span class="o">]</span>
+                   <span class="o">[</span>--print<span class="o">]</span> <span class="o">[</span>--verbose<span class="o">]</span>
+
+Linter <span class="k">for</span> SDF file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --param PARAM, -p PARAM
+                        ROS parameter where the SDF robot description is
+                        stored
+  --filename FILENAME, -f FILENAME
+                        Filename name to the SDF robot description or XACRO
+                        filename to generate it
+  --xml XML, -x XML     XML text input with the SDF robot description
+  --print               Print the file
+  --verbose, -v         Run on verbose mode
+</code></pre></div>
+
+<h4 id="pcg-spawn-sdf-model"><code>pcg-spawn-sdf-model</code><a class="headerlink" href="#pcg-spawn-sdf-model" title="Permanent link">&para;</a></h4>
+<p>Spawns a model described in SDF format in the current running instance of Gazebo.
+The input SDF data can be provided via ROS parameter and the simulation can be
+set to unpause after the model has been spawned.
+This script starts a ROS node and therefore <code>roscore</code> must be already running.
+Run <code>pcg-spawn-sdf-model -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-spawn-sdf-model -h
+usage: pcg-spawn-sdf-model <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--param_name PARAM_NAME<span class="o">]</span>
+                           <span class="o">[</span>--robot_name ROBOT_NAME<span class="o">]</span> <span class="o">[</span>--x X<span class="o">]</span> <span class="o">[</span>--y Y<span class="o">]</span> <span class="o">[</span>--z Z<span class="o">]</span>
+                           <span class="o">[</span>--roll ROLL<span class="o">]</span> <span class="o">[</span>--pitch PITCH<span class="o">]</span> <span class="o">[</span>--yaw YAW<span class="o">]</span>
+                           <span class="o">[</span>--unpause-simulation<span class="o">]</span>
+
+Spawn SDF model after trigger
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --param_name PARAM_NAME
+                        Input parameter name where the SDF content is stored
+  --robot_name ROBOT_NAME
+                        Name of the robot model
+  --x X                 X coordinate of the spawning position in meters
+  --y Y                 Y coordinate of the spawning position in meters
+  --z Z                 Z coordinate of the spawning position in meters
+  --roll ROLL           Roll angle of the spawning position in radians
+  --pitch PITCH         Pitch angle of the spawning position in radians
+  --yaw YAW             Yaw angle of the spawning position in radians
+  --unpause-simulation  Unpause simulation once the model has been spawned
+</code></pre></div>
+
+<h4 id="pcg-start-gazebo-world"><code>pcg-start-gazebo-world</code><a class="headerlink" href="#pcg-start-gazebo-world" title="Permanent link">&para;</a></h4>
+<p>Starts a Gazebo simulation from a <code>.world</code> file.
+The <code>.world</code> file can be either provided as a file or through a ROS topic.
+This script can be used start a world only when description is available via topic.
+Run <code>pcg-start-gazebo-world -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-start-gazebo-world -h
+usage: pcg-start-gazebo-world <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--input_topic INPUT_TOPIC<span class="o">]</span>
+                              <span class="o">[</span>--input_world_filename INPUT_WORLD_FILENAME<span class="o">]</span>
+                              <span class="o">[</span>--physics PHYSICS<span class="o">]</span> <span class="o">[</span>--paused PAUSED<span class="o">]</span>
+                              <span class="o">[</span>--gui GUI<span class="o">]</span>
+
+Start Gazebo world from file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --input_topic INPUT_TOPIC, -t INPUT_TOPIC
+                        ROS topic that will deliver the XML text input with
+                        the SDF robot description
+  --input_world_filename INPUT_WORLD_FILENAME, -f INPUT_WORLD_FILENAME
+                        Input
+  --physics PHYSICS     Name of the physics engine
+  --paused PAUSED       Start simulation paused
+  --gui GUI             Do not start Gazebo client
+</code></pre></div>
+
+<h4 id="pcg-urdf2sdf"><code>pcg-urdf2sdf</code><a class="headerlink" href="#pcg-urdf2sdf" title="Permanent link">&para;</a></h4>
+<p>Converts an URDF file into a SDF file.
+Run <code>pcg-urdf2sdf -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-urdf2sdf -h
+usage: pcg-urdf2sdf <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--param PARAM<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--xml XML<span class="o">]</span>
+                    <span class="o">[</span>--input-topic INPUT_TOPIC<span class="o">]</span>
+                    <span class="o">[</span>--output-filename OUTPUT_FILENAME<span class="o">]</span>
+                    <span class="o">[</span>--output-parameter OUTPUT_PARAMETER<span class="o">]</span>
+                    <span class="o">[</span>--output-gazebo-model-path OUTPUT_GAZEBO_MODEL_PATH<span class="o">]</span>
+                    <span class="o">[</span>--create-gazebo-model<span class="o">]</span> <span class="o">[</span>--model-name MODEL_NAME<span class="o">]</span>
+                    <span class="o">[</span>--print<span class="o">]</span> <span class="o">[</span>--sdf-version SDF_VERSION<span class="o">]</span> <span class="o">[</span>--verbose<span class="o">]</span>
+
+Convert SDF to URDF file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --param PARAM, -p PARAM
+                        ROS parameter where the URDF robot description is
+                        stored
+  --filename FILENAME, -f FILENAME
+                        Filename name to the URDF robot description
+  --xml XML, -x XML     XML text input with the URDF robot description
+  --input-topic INPUT_TOPIC, -t INPUT_TOPIC
+                        ROS topic that will deliver the XML text input with
+                        the URDF robot description
+  --output-filename OUTPUT_FILENAME, -o OUTPUT_FILENAME
+                        Output file to store the converted SDF file
+  --output-parameter OUTPUT_PARAMETER, -r OUTPUT_PARAMETER
+                        Output ROS parameter to store the converted SDF file
+  --output-gazebo-model-path OUTPUT_GAZEBO_MODEL_PATH, -gp OUTPUT_GAZEBO_MODEL_PATH
+                        Output path <span class="k">for</span> the Gazebo model
+  --create-gazebo-model, -g
+                        Export SDF as a static Gazebo model
+  --model-name MODEL_NAME, -m MODEL_NAME
+                        Name of the model being generated
+  --print               Print the file
+  --sdf-version SDF_VERSION
+                        Version of the SDF file being generated
+  --verbose, -v         Run on verbose mode
+</code></pre></div>
+
+<h4 id="pcg-urdflint"><code>pcg-urdflint</code><a class="headerlink" href="#pcg-urdflint" title="Permanent link">&para;</a></h4>
+<p>Checks an URDF file for errors. If a XACRO file is provided, it will be processed using the default <code>xacro</code> parser and the resulting URDF will be checked for errors.
+Run <code>pcg-urdflint -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-urdflint -h
+usage: pcg-urdflint <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--param PARAM<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span> <span class="o">[</span>--xml XML<span class="o">]</span>
+                    <span class="o">[</span>--print<span class="o">]</span> <span class="o">[</span>--verbose<span class="o">]</span>
+
+Convert URDF to URDF file
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --param PARAM, -p PARAM
+                        ROS parameter where the URDF robot description is
+                        stored
+  --filename FILENAME, -f FILENAME
+                        Filename name to the URDF robot description or XACRO
+                        file to generate it
+  --xml XML, -x XML     XML text input with the URDF robot description
+  --print               Print the file
+  --verbose, -v         Run on verbose mode
+</code></pre></div>
+
+<h4 id="pcg-view-gazebo-model"><code>pcg-view-gazebo-model</code><a class="headerlink" href="#pcg-view-gazebo-model" title="Permanent link">&para;</a></h4>
+<p>Opens a static Gazebo model and displays its geometries.
+To see the tags of all Gazebo models available in your system, run <code>pcg-list-gazebo-models</code>.</p>
+<div class="codehilite"><pre><span></span><code>pcg-view-gazebo-model -h
+usage: Open and display a Gazebo model <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--model MODEL<span class="o">]</span> <span class="o">[</span>--collision<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --model MODEL, -m MODEL
+                        Gazebo model name
+  --collision, -c       View collision meshes
+</code></pre></div>
+
+<blockquote>
+<p>Examples</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code>$ pcg-view-gazebo-model --model MODEL_NAME # To display the visual meshes
+$ pcg-view-gazebo-model --model MODEL_NAME --collision # To display the collision meshes
+</code></pre></div>
+
+<h4 id="pcg-view-mesh"><code>pcg-view-mesh</code><a class="headerlink" href="#pcg-view-mesh" title="Permanent link">&para;</a></h4>
+<p>Opens a mesh file and displays it.
+Run <code>pcg-view-mesh -h</code> for more information.</p>
+<div class="codehilite"><pre><span></span><code>pcg-view-mesh -h
+usage: Open and display a mesh <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--filename FILENAME<span class="o">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+  --filename FILENAME, -f FILENAME
+                        Mesh filename
+</code></pre></div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../install/" title="Advanced Installation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Advanced Installation
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../single_room_generation/" title="Single Room Generation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Single Room Generation
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/boschresearch" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>

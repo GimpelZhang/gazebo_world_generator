@@ -1,0 +1,473 @@
+# Copyright (c) 2020 - The Procedural Generation for Gazebo authors
+# For information on the respective copyright owner see the NOTICE file
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+from ..log import PCG_ROOT_LOGGER
+from ..random import init_random_state
+from ..utils import generate_random_string, is_string, \
+    load_yaml, is_integer
+
+
+class _Generator(object):
+    def __init__(self, name='default', **kwargs):
+        from ..collection_managers import AssetsManager, EngineManager
+        print("line 93.")
+        self._assets = AssetsManager.get_instance()
+        print("line 94.")
+        self._engines = EngineManager()
+        print("line 95.")
+        self._simulation_entity = None
+        self._name = None
+        self._seed = None
+
+        # Set the name provided to the simulation
+        # entity to be generated
+        self.name = name
+        self.from_dict(kwargs)
+        print("line 96.")
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        assert is_string(value), \
+            'Name should be a string'
+        assert len(value) > 0, \
+            'Name cannot be an empty string'
+        self._name = value
+
+    @property
+    def seed(self):
+        return self._seed
+
+    @seed.setter
+    def seed(self, value):
+        assert value is None or is_integer(value)
+        self._seed = value
+
+    @property
+    def assets(self):
+        """List of `pcg_gazebo.simulation.SimulationModel`: List of model
+        assets that will be used of the world generation.
+        """
+        return self._assets
+
+    @property
+    def engines(self):
+        """`dict` of `pcg_gazebo.generators.engines`: Dictionary with the
+        model creation engines.
+        """
+        return self._engines
+
+    @property
+    def constraints(self):
+        """`dict` of `pcg_gazebo.generators.constraints`: Dictionary with the
+        positioning constraints.
+        """
+        return self._engines.constraints_manager
+
+    def _add_asset_to_simulation_entity(self, obj):
+        print("line 50.")
+        from ..simulation import SimulationModel, ModelGroup, \
+            Light
+        if isinstance(obj, SimulationModel):
+            print("line 51.")
+            PCG_ROOT_LOGGER.info(
+                'Adding model {} to world'.format(
+                    obj.name))
+            print('Adding model {} to world'.format(
+                    obj.name))
+            return self._simulation_entity.add_model(obj.name, obj)
+        elif isinstance(obj, ModelGroup):
+            print("line 52.")
+            PCG_ROOT_LOGGER.info(
+                'Adding model group {} to world'.format(
+                    obj.name))
+            print('Adding model group {} to world'.format(
+                    obj.name))
+            return self._simulation_entity.add_model_group(obj, obj.name)
+        elif isinstance(obj, Light):
+            print("line 53.")
+            return self._simulation_entity.add_light(obj.name, obj)
+        return False
+
+    def add_engine(self, tag, engine_name, models, **kwargs):
+        """Add a new model creator engine to the internal engines list.
+
+        > *Input arguments*
+
+        * `engine_name` (*type:* `str`): Name of the engine class
+        to be created
+        * `models` (*type:* list of `str`): Name of the models that
+        will be assets to the created engine
+        * `kwargs` (*type:* `dict`): Input arguments to the created engine.
+        """
+        return self._engines.add(tag, engine_name, models, **kwargs)
+
+    def add_constraint(self, name, type, **kwargs):
+        """Add a new positioning constraint class to the internal
+        constraints list.
+
+        > *Input arguments*
+
+        * `name` (*type:* `str`): ID name for the constraint class instance
+        * `type` (*type:* `str`): Name of the constraints class to be created
+        * `kwargs` (*type:* `dict`): Input arguments for the constraint class
+        to be created
+        """
+        return self._engines.add_constraint(name, type, **kwargs)
+
+    def add_asset(self, *args, **kwargs):
+        """Add a new model asset that can be used by the engines and
+        added to the generated world.
+
+        > *Input arguments*
+
+        * `model` (*type:* `pcg_gazebo.simulation.SimulationModel`):
+        Simulation model
+        """
+        return self._assets.add(*args, **kwargs)
+
+    def set_model_as_ground_plane(self, model_name):
+        """Flag a model asset as part of the ground plane. This procedure will
+        affect the collision checks during the automatic placement of models in
+        the world using the placement engines.
+
+        > *Input arguments*
+
+        * `model_name` (*type:* `str`): Name of the model asset
+        """
+        return self._assets.set_asset_as_ground_plane(model_name)
+
+    def get_asset(self, name):
+        """Return a simulation model asset.
+
+        > *Input arguments*
+
+        * `name` (*type:* `str`): Name of the model asset.
+
+        > *Returns*
+
+        The model asset as `pcg_gazebo.simulation.SimulationModel`.
+        `None` if `name` cannot be found in the list of model assets.
+        """
+        return self._assets.get(name)
+
+    def get_constraint(self, name):
+        """Return a positioning constraint configuration.
+
+        > *Input arguments*
+
+        * `param` (*type:* `data_type`, *default:* `data`):
+        Parameter description
+
+        > *Returns*
+
+        Description of return values
+        """
+        return self._engines.constraints_manager.get(name)
+
+    def add_gazebo_model(self, model_name, pose=[0, 0, 0, 0, 0, 0]):
+        """Add an existent Gazebo model to the world in designed poses.
+
+        > *Input arguments*
+
+        * `model_name` (*type:* `str`): ID name of the Gazebo model
+        * `pose` (*type:* `list`): 6D pose vector
+        """
+        from ..simulation import SimulationModel
+        if not self.is_asset(model_name):
+            self.add_gazebo_model_as_asset(model_name)
+        model = SimulationModel.from_gazebo_model(model_name)
+
+        # Model with the same name is already in the world list
+        # Add ID identifier to avoid errors when spawning
+        i = 0
+        new_model_name = '{}'.format(model_name)
+        while self._simulation_entity.model_exists(new_model_name):
+            i += 1
+            new_model_name = '{}_{}'.format(model_name, i)
+
+        model.name = new_model_name
+        # Add new model
+        self.add_model(model, pose)
+        PCG_ROOT_LOGGER.info(
+            'Model <{}> added to world description'.format(model_name))
+
+    def add_gazebo_model_as_asset(self, gazebo_model_name):
+        """Create a model asset by importing a Gazebo model that already
+        exists in the resources path of the catkin workspace. The model's
+        SDF file will be parsed and converted into a
+        `pcg_gazebo.simulation.SimulationModel` instance.
+
+        Models that include lights can also be added, but will not be
+        considered assets, they will just be included into the generated
+        world SDF file.
+
+        > *Input arguments*
+
+        * `gazebo_model_name` (*type:* `str`): ID name from the Gazebo model
+        to be imported
+
+        > *Returns*
+
+        `True` if Gazebo model could be included in the assets list.
+        """
+        from ..simulation import get_gazebo_model_sdf, SimulationModel
+        sdf = get_gazebo_model_sdf(gazebo_model_name)
+
+        if hasattr(sdf, 'lights') and sdf.lights is not None:
+            return self.add_lights_from_gazebo_model(gazebo_model_name)
+        else:
+            try:
+                model = SimulationModel.from_gazebo_model(gazebo_model_name)
+            except ValueError as ex:
+                PCG_ROOT_LOGGER.error(
+                    'Error loading Gazebo model <{}>, message={}'.format(
+                        gazebo_model_name, str(ex)))
+                return False
+
+            if model is None:
+                PCG_ROOT_LOGGER.error(
+                    'Gazebo model with name <{}> '
+                    'could not be found'.format(gazebo_model_name))
+                return False
+            self.add_asset(model)
+        return True
+
+    def is_asset(self, name):
+        """Return `True` if the model identified by the string `name`
+        is part of the list of assets.
+
+        > *Input arguments*
+
+        * `name` (*type:* `str`): Name of the model
+        """
+        return name in self._assets.tags
+
+    def remove_asset(self, name):
+        """Remove model asset from the list of assets.
+
+        > *Input arguments*
+
+        * `name` (*type:* `str`): Name of the model
+
+        > *Returns*
+
+        `True`, if model could be removed.
+        """
+        return self._assets.remove(name)
+
+    def add_model(self, model, poses):
+        """Add an instance of `pcg_gazebo.simulation.SimulationModel` to
+        the world in designed poses.
+
+        > *Input arguments*
+
+        * `model` (*type:* `pcg_gazebo.simulation.SimulationModel`):
+        Parameter description
+        * `poses` (*type:* `list`): List of 6D pose vectors
+        """
+        self.add_asset(model)
+        self.add_engine(
+            tag=generate_random_string(5),
+            engine_name='fixed_pose',
+            models=[model.name],
+            poses=poses)
+
+    def add_lights_from_gazebo_model(self, model_name):
+        """Add light models to the generated world from a Gazebo model.
+
+        > *Input arguments*
+
+        * `model_name` (*type:* `str`): Name of the Gazebo model
+
+        > *Returns*
+
+        `True` if the lights could be parsed and added to the world.
+        """
+        from ..simulation import get_gazebo_model_sdf, Light
+        sdf = get_gazebo_model_sdf(model_name)
+        if sdf is None:
+            PCG_ROOT_LOGGER.error(
+                'Model {} is not a Gazebo model'.format(model_name))
+            return False
+        if sdf.lights is not None:
+            PCG_ROOT_LOGGER.info(
+                'Input Gazebo model {} contains'
+                ' lights, adding to world'.format(
+                    model_name))
+            for light in sdf.lights:
+                PCG_ROOT_LOGGER.info('Add light {}, type={}'.format(
+                    light.name, light.type))
+                self._simulation_entity.add_light(light.name, Light.from_sdf(
+                    light))
+            return True
+        else:
+            PCG_ROOT_LOGGER.error(
+                'Input Gazebo model contains no '
+                'lights, model_name={}'.format(model_name))
+            return False
+
+    def run_engines(self, attach_models=False):
+        """Run all the model placement engines and add the generated
+        models in the internal instance of the world representation.
+
+        > *Input arguments*
+
+        * `attach_models` (*type:* `bool`, *default:* `False`): Attach
+        the generated models to the existent list of models in the world
+
+        > *Returns*
+
+        `True` if all engines ran successfully.
+        """
+        print("line 1.")
+        if self._simulation_entity is None:
+            self.init()
+        print("line 2.")
+        init_random_state(self._seed)
+        print("line 3.")
+        if self._engines.size == 0:
+            PCG_ROOT_LOGGER.warning('No engines found')
+            return False
+        print("line 4.")
+        if not attach_models:
+            self._simulation_entity.reset_models()
+            PCG_ROOT_LOGGER.info('List of models is now empty')
+        print("line 5.")
+        self._engines.reset_engines()
+        print("line 6.")
+        models = list()
+        print("line 7.")
+        # Run the fixed pose engines first
+        PCG_ROOT_LOGGER.info('Run fixed-pose engines')
+        for tag in self._engines.tags:
+            print(tag)
+            print("line 8.")
+            engine = self._engines.get(tag)
+            # print(engine)
+            print(type(engine))
+            print("line 9.")
+            if engine.label == 'fixed_pose':
+                print("line 10.")
+                models = engine.run()
+                print("line 11.")
+                if models is not None:
+                    for model in models:
+                        print("line 12.")
+                        if not self._add_asset_to_simulation_entity(model):
+                            print("line 13.")
+                            PCG_ROOT_LOGGER.error(
+                                'Cannot add asset <{}>'.format(
+                                    model.name))
+        print("line 14.")
+        # Run all other engines
+        PCG_ROOT_LOGGER.info('Run other engines')
+        for tag in self._engines.tags:
+            print("line 15.")
+            engine = self._engines.get(tag)
+            print("line 16.")
+            if engine.label != 'fixed_pose':
+                print("line 17.")
+                PCG_ROOT_LOGGER.info(
+                    'Running engine, type={}'.format(
+                        engine.label))
+                for item in list(self._simulation_entity.models.values()):
+                    print("line 18.")
+                    engine.set_fixed_pose_model(item)
+                print("line 19.")
+                models = engine.run()
+                print("line 20.")
+                if models is not None:
+                    for model in models:
+                        print("line 21.")
+                        if not self._add_asset_to_simulation_entity(model):
+                            print("line 22.")
+                            PCG_ROOT_LOGGER.error(
+                                'Cannot add asset <{}>'.format(
+                                    model.name))
+        print("line 23.")
+        flength = len(self._simulation_entity.models)
+        flist = list(self._simulation_entity.models.keys())
+        # PCG_ROOT_LOGGER.info(
+        #     'Model placement finished, # models={}, model_names={}'.format(
+        #         len(self._simulation_entity.models),
+        #         list(self._simulation_entity.models.keys())))
+        print('Model placement finished, # models={}, model_names={}'.format(
+                flength,
+                flist))
+        print("line 24.")
+        return True
+
+    def init(self):
+        raise NotImplementedError(
+            'The derived class should implement this function')
+
+    def from_yaml(self, filename):
+        config = load_yaml(filename)
+        self.from_dict(config)
+
+    def from_dict(self, config):
+        from ..simulation import is_gazebo_model
+        assert isinstance(config, dict), \
+            'Input configuration must be provided as a dictionary'
+
+        if 'name' in config:
+            assert is_string(config['name']), 'Name must be a string'
+            self.name = config['name']
+            PCG_ROOT_LOGGER.info('Generator name: {}'.format(self._name))
+
+        if 'seed' in config:
+            assert is_integer(config['seed']), 'Seed must be an integer'
+            self.seed = config['seed']
+            PCG_ROOT_LOGGER.info('Generator random seed: {}'.format(
+                self._seed))
+
+        if 'ground_plane' in config:
+            for tag in config['ground_plane']:
+                self.set_model_as_ground_plane(tag)
+
+                PCG_ROOT_LOGGER.info(
+                    'Set model {} as ground plane'.format(tag))
+
+        if 'assets' in config:
+            self.assets.from_dict(config['assets'])
+
+        if 'engines' in config:
+            if not isinstance(config['engines'], list):
+                PCG_ROOT_LOGGER.error(
+                    '<engines> element in dictionary must be a list')
+            else:
+                self.engines.from_dict(config['engines'])
+
+        if 'constraints' in config:
+            if not isinstance(config['constraints'], list):
+                PCG_ROOT_LOGGER.error(
+                    '<constraints> element in dictionary must be a list')
+            for elem in config['constraints']:
+                assert isinstance(
+                    elem, dict), 'Constraint description ' \
+                    'is not a dictionary={}'.format(elem)
+                self.engines.add_constraint(**elem)
+
+        if 'lights' in config:
+            PCG_ROOT_LOGGER.info('Lights:')
+            for light in config['lights']:
+                if 'name' not in light:
+                    PCG_ROOT_LOGGER.error('Light item has no name')
+                    continue
+                if is_gazebo_model(light['name']):
+                    self.add_lights_from_gazebo_model(light['name'])

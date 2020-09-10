@@ -1,0 +1,21 @@
+*~
+*.pyc
+__pycache__
+.pytest_cache
+.ipynb_checkpoints
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+.vscode/launch.json
+
+# Packaging files
+build/
+dist/
+*.egg
+*.egg-info/
+
+# Test files
+venv/
+
+# Documentation files
+site/
+_pydocmd

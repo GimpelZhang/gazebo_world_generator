@@ -1,0 +1,1308 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Examples - Procedural Generation for Gazebo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#model-generation" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="Procedural Generation for Gazebo" aria-label="Procedural Generation for Gazebo" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Procedural Generation for Gazebo
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Examples
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/boschresearch/pcg_gazebo/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    boschresearch/pcg_gazebo
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../install/" class="md-tabs__link">
+          Documentation
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../single_room_generation/" class="md-tabs__link md-tabs__link--active">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../reference/log/" class="md-tabs__link">
+          API Documentation
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="Procedural Generation for Gazebo" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Procedural Generation for Gazebo
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/boschresearch/pcg_gazebo/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    boschresearch/pcg_gazebo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      Documentation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Advanced Installation" class="md-nav__link">
+      Advanced Installation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../scripts/" title="Scripts" class="md-nav__link">
+      Scripts
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../single_room_generation/" title="Single Room Generation" class="md-nav__link">
+      Single Room Generation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Examples
+      </label>
+    
+    <a href="./" title="Examples" class="md-nav__link md-nav__link--active">
+      Examples
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-generation" class="md-nav__link">
+    Model generation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-full-gazebo-models-in-python" class="md-nav__link">
+    Creating full Gazebo models in Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-group-generator" class="md-nav__link">
+    Model group generator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-factory" class="md-nav__link">
+    Model factory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-models-from-a-yaml-configuration-file" class="md-nav__link">
+    Generating models from a YAML configuration file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-models-from-template-jinja-files" class="md-nav__link">
+    Generating models from template Jinja files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#world-generation" class="md-nav__link">
+    World generation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamically-generating-worlds-from-yaml-configuration-file" class="md-nav__link">
+    Dynamically generating worlds from YAML configuration file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#occupancy-grid-map-generation" class="md-nav__link">
+    Occupancy grid map generation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsers" class="md-nav__link">
+    Parsers
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parsing-xacro-files" class="md-nav__link">
+    Parsing xacro files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-of-jupyter-notebooks" class="md-nav__link">
+    List of Jupyter notebooks
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulation" class="md-nav__link">
+    Simulation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdf-parsers" class="md-nav__link">
+    SDF parsers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urdf-parsers" class="md-nav__link">
+    URDF parsers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#occupancy-grid-generation" class="md-nav__link">
+    Occupancy grid generation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-manager" class="md-nav__link">
+    Task manager
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      API Documentation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        API Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/log/" title="pcg_gazebo.log" class="md-nav__link">
+      pcg_gazebo.log
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/path/" title="pcg_gazebo.path" class="md-nav__link">
+      pcg_gazebo.path
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/visualization/" title="pcg_gazebo.visualization" class="md-nav__link">
+      pcg_gazebo.visualization
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      pcg_gazebo.simulation
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        pcg_gazebo.simulation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation/" title="pcg_gazebo.simulation" class="md-nav__link">
+      pcg_gazebo.simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_physics/" title="pcg_gazebo.simulation.physics" class="md-nav__link">
+      pcg_gazebo.simulation.physics
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_properties/" title="pcg_gazebo.simulation.properties" class="md-nav__link">
+      pcg_gazebo.simulation.properties
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/simulation_sensors/" title="pcg_gazebo.simulation.sensors" class="md-nav__link">
+      pcg_gazebo.simulation.sensors
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      pcg_gazebo.parsers
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        pcg_gazebo.parsers
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers/" title="pcg_gazebo.parsers" class="md-nav__link">
+      pcg_gazebo.parsers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_sdf/" title="pcg_gazebo.parsers.sdf" class="md-nav__link">
+      pcg_gazebo.parsers.sdf
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_sdf_config/" title="pcg_gazebo.parsers.sdf_config" class="md-nav__link">
+      pcg_gazebo.parsers.sdf_config
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_types/" title="pcg_gazebo.parsers.types" class="md-nav__link">
+      pcg_gazebo.parsers.types
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_urdf/" title="pcg_gazebo.parsers.urdf" class="md-nav__link">
+      pcg_gazebo.parsers.urdf
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/parsers_gazebo/" title="pcg_gazebo.parsers.gazebo" class="md-nav__link">
+      pcg_gazebo.parsers.gazebo
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/task_manager/" title="pcg_gazebo.task_manager" class="md-nav__link">
+      pcg_gazebo.task_manager
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-7" type="checkbox" id="nav-4-7">
+    
+    <label class="md-nav__link" for="nav-4-7">
+      pcg_gazebo.generators
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-7">
+        pcg_gazebo.generators
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators/" title="pcg_gazebo.generators" class="md-nav__link">
+      pcg_gazebo.generators
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_components/" title="pcg_gazebo.generators.components" class="md-nav__link">
+      pcg_gazebo.generators.components
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_constraints/" title="pcg_gazebo.generators.constraints" class="md-nav__link">
+      pcg_gazebo.generators.constraints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_engines/" title="pcg_gazebo.generators.engines" class="md-nav__link">
+      pcg_gazebo.generators.engines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_item_pickers/" title="pcg_gazebo.generators.item_pickers" class="md-nav__link">
+      pcg_gazebo.generators.item_pickers
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../reference/generators_rules/" title="pcg_gazebo.generators.rules" class="md-nav__link">
+      pcg_gazebo.generators.rules
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#model-generation" class="md-nav__link">
+    Model generation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-full-gazebo-models-in-python" class="md-nav__link">
+    Creating full Gazebo models in Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-group-generator" class="md-nav__link">
+    Model group generator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-factory" class="md-nav__link">
+    Model factory
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-models-from-a-yaml-configuration-file" class="md-nav__link">
+    Generating models from a YAML configuration file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-models-from-template-jinja-files" class="md-nav__link">
+    Generating models from template Jinja files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#world-generation" class="md-nav__link">
+    World generation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dynamically-generating-worlds-from-yaml-configuration-file" class="md-nav__link">
+    Dynamically generating worlds from YAML configuration file
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#occupancy-grid-map-generation" class="md-nav__link">
+    Occupancy grid map generation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsers" class="md-nav__link">
+    Parsers
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parsing-xacro-files" class="md-nav__link">
+    Parsing xacro files
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-of-jupyter-notebooks" class="md-nav__link">
+    List of Jupyter notebooks
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simulation" class="md-nav__link">
+    Simulation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sdf-parsers" class="md-nav__link">
+    SDF parsers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#urdf-parsers" class="md-nav__link">
+    URDF parsers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#occupancy-grid-generation" class="md-nav__link">
+    Occupancy grid generation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-manager" class="md-nav__link">
+    Task manager
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/boschresearch/pcg_gazebo/edit/master/docs/examples.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Examples</h1>
+                
+                <p>This folder contains a number of examples demonstrating the features
+of the <code>pcg_gazebo</code> package.
+To run the Jupyter notebooks, be sure to install it as</p>
+<div class="codehilite"><pre><span></span><code>pip install jupyterlab
+</code></pre></div>
+
+<h4 id="model-generation">Model generation<a class="headerlink" href="#model-generation" title="Permanent link">&para;</a></h4>
+<h5 id="creating-full-gazebo-models-in-python">Creating full Gazebo models in Python<a class="headerlink" href="#creating-full-gazebo-models-in-python" title="Permanent link">&para;</a></h5>
+<p>In the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_creating_models_with_jupyter_notebooks.ipynb">example on creating Gazebo models in Python</a>, it is demonstrated how to use the tools from the <code>simulation</code> module in order to create simulation entities and can be spawned directly into Gazebo.</p>
+<h5 id="model-group-generator">Model group generator<a class="headerlink" href="#model-group-generator" title="Permanent link">&para;</a></h5>
+<p>In the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_model_group_generators.ipynb">model group generator example notebook</a>, it is demonstrated how to create a model group abstraction in which the model's parameters are re-calculated each time an instance of the model group is created. 
+This allows using a single representation of the model group generator as an asset and generating its variations as an instance is created.</p>
+<h5 id="model-factory">Model factory<a class="headerlink" href="#model-factory" title="Permanent link">&para;</a></h5>
+<p>In the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_model_factory.ipynb">model factory example notebook</a>, it is demonstrated how to use the <code>creators</code> module to create parametrized simulation models and spawn them in Gazebo.</p>
+<h5 id="generating-models-from-a-yaml-configuration-file">Generating models from a YAML configuration file<a class="headerlink" href="#generating-models-from-a-yaml-configuration-file" title="Permanent link">&para;</a></h5>
+<p>This examples shows how to define a simulation model as a YAML file
+and generate static Gazebo models to be stored in your local <code>$HOME/.pcg/models</code>
+folder.
+This example requires you to run the script in the <code>examples</code> folder</p>
+<div class="codehilite"><pre><span></span><code>./gen_model_from_factory_config.sh CONFIG_NAME
+</code></pre></div>
+
+<p>where <code>CONFIG_NAME</code> refers to the name of one the files (without the <code>.yaml</code> 
+extension) in the <code>examples/model_factory</code> folder.
+For example, by running</p>
+<div class="codehilite"><pre><span></span><code>./gen_model_from_factory_config.sh box_dynamic_model
+</code></pre></div>
+
+<p>will generate a box model with mass and moments of inertia and store it in
+the folder <code>$HOME/.pcg/models/pcg_box_dynamic</code>, including <code>model.config</code> and 
+<code>model.sdf</code> files.</p>
+<p>Some YAML files include a batch of model descriptions and therefore will
+produce multiple Gazebo models in the <code>$HOME/.pcg/models</code> folder.</p>
+<p>This example runs the chosen YAML file with the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/scripts/run_model_factory"><code>run_model_factory</code></a> script,
+that feeds the data into the model factory functions found in the <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/pcg_gazebo/generators/creators.py">model factory module</a>.</p>
+<p>To find out more about how to run the model factory from script, run</p>
+<div class="codehilite"><pre><span></span><code>run_model_factory -h
+</code></pre></div>
+
+<p>To generate the model from the YAML file configuration and spawn it into 
+Gazebo, first start Gazebo as</p>
+<div class="codehilite"><pre><span></span><code>roslaunch gazebo_ros empty_world.launch
+</code></pre></div>
+
+<p>and then use the same <code>CONFIG_NAME</code> to run the script</p>
+<div class="codehilite"><pre><span></span><code>./spawn_model_from_factory_config.sh CONFIG_NAME
+</code></pre></div>
+
+<h5 id="generating-models-from-template-jinja-files">Generating models from template Jinja files<a class="headerlink" href="#generating-models-from-template-jinja-files" title="Permanent link">&para;</a></h5>
+<p>This examples shows how generate an SDF file for a Gazebo model
+from a Jinja template and store static Gazebo models in your local 
+<code>$HOME/.pcg/models</code> folder.
+This example requires you to run the script in the <code>examples</code> folder</p>
+<div class="codehilite"><pre><span></span><code>./gen_model_from_template.sh TEMPLATE_NAME
+</code></pre></div>
+
+<p>where <code>TEMPLATE_NAME</code> refers to the name of one the files (without the <code>.yaml</code> 
+extension) in the <code>examples/templates/models</code> folder.
+For example, by running</p>
+<div class="codehilite"><pre><span></span><code>./gen_model_from_template.sh pcg_bouncy_ball
+</code></pre></div>
+
+<p>will generate single-link spherical model with the necessary settings to allow
+it to bounce when colliding with another object.
+The model is per default stored in the folder <code>$HOME/.pcg/models/pcg_bouncy_ball</code>, including <code>model.config</code> and <code>model.sdf</code> files.</p>
+<p>To find out more about how to run the Jinja processor from script, run</p>
+<div class="codehilite"><pre><span></span><code>process_jinja_template -h
+</code></pre></div>
+
+<p>This <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_inspect_robot_description.ipynb">notebook</a> also shows an example on how the <code>kobuki</code> robot (converted to a <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/robot_description/kobuki/sdf/kobuki.sdf.jinja">Jinja template to generate the robot description in SDF format</a>) is processed from its templates and imported as an <code>SimulationModel</code> object that can be edited and spawned into the simulation.</p>
+<h4 id="world-generation">World generation<a class="headerlink" href="#world-generation" title="Permanent link">&para;</a></h4>
+<h5 id="dynamically-generating-worlds-from-yaml-configuration-file">Dynamically generating worlds from YAML configuration file<a class="headerlink" href="#dynamically-generating-worlds-from-yaml-configuration-file" title="Permanent link">&para;</a></h5>
+<p>The <code>pcg_gazebo</code> package includes not only model creators but also engines
+that allow creating and placing objects in the world according to pre-defined
+policies and respecting certain constraints.</p>
+<p>The sample configurations that allow worlds to be dynamically created can be found
+in <code>examples/world_generator/worlds</code> and by running </p>
+<div class="codehilite"><pre><span></span><code>./launch_pcg_world.sh WORLD_CONFIG_NAME
+</code></pre></div>
+
+<p><code>WORLD_CONFIG_NAME</code> being the name of the world configuration file (without the <code>.yaml</code> extension) in the <code>examples/world_generator/worlds</code> folder.
+The resulting world file will be stored in <code>$HOME/.pcg/worlds</code> folder.</p>
+<p>For example, by calling</p>
+<div class="codehilite"><pre><span></span><code>./launch_pcg_world.sh bouncing_balls_ode
+</code></pre></div>
+
+<p>generates an environment of 40 spheres placed randomly in the 3D world, all 
+of them with the bounce settings enabled so that they will bounce against
+the ground and each other.</p>
+<h4 id="occupancy-grid-map-generation">Occupancy grid map generation<a class="headerlink" href="#occupancy-grid-map-generation" title="Permanent link">&para;</a></h4>
+<p>Occupancy grid maps can be computed from single models, model groups or worlds using ray tracing.
+In this <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/gen_grid_map.ipynb">notebook</a> it is demonstrated how a grid map can be plotted and stored from a generated world.</p>
+<h4 id="parsers">Parsers<a class="headerlink" href="#parsers" title="Permanent link">&para;</a></h4>
+<h5 id="parsing-xacro-files">Parsing <code>xacro</code> files<a class="headerlink" href="#parsing-xacro-files" title="Permanent link">&para;</a></h5>
+<p>This <a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_inspect_robot_description.ipynb">example</a> it is shown how to import a <code>xacro</code> file that will be processed, rendered into an URDF file and imported as a <code>SimulationModel</code> object.</p>
+<h4 id="list-of-jupyter-notebooks">List of Jupyter notebooks<a class="headerlink" href="#list-of-jupyter-notebooks" title="Permanent link">&para;</a></h4>
+<h5 id="simulation">Simulation<a class="headerlink" href="#simulation" title="Permanent link">&para;</a></h5>
+<p>To run some of the notebooks below you may need to source your current ROS distribution and have Gazebo installed in your system since they will also run the simulation.
+To source ROS, use</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">source</span> /opt/ros/<span class="nv">$ROS_DISTRO</span>/setup.bash  <span class="c1"># You can also replace $ROS_DISTRO by the distro you are using, e.g. melodic</span>
+</code></pre></div>
+
+<p>The installation instructions for Gazebo can be found <a href="http://gazebosim.org/tutorials?tut=install_ubuntu&amp;cat=install">here</a>.</p>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_surface_collision_properties.ipynb">Testing the model's surface collision properties</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_model_factory.ipynb">Using the model factory</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_inspection_of_gazebo_models.ipynb">Inspecting Gazebo models</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_creating_models_with_jupyter_notebooks.ipynb">Creating models with Jupyter notebooks</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_run_gazebo_with_simulation_timeout.ipynb">Stopping Gazebo with a simulation timeout</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_model_group_generators.ipynb">Using model group generators</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_sensors.ipynb">Creating sensors</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_objects.ipynb">Creating single-link models</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_run_gazebo_with_process_timeout.ipynb">Stopping Gazebo with a process timeout</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_meshes.ipynb">Handling meshes</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_physics_engines.ipynb">Configuring the different physics engines</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_inspect_robot_description.ipynb">Inspecting different formats of robot descriptions</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sim_materials.ipynb">Handling Gazebo materials</a></li>
+</ul>
+<h5 id="sdf-parsers">SDF parsers<a class="headerlink" href="#sdf-parsers" title="Permanent link">&para;</a></h5>
+<p>The examples for the <code>sdf</code> parser is available as Jupyter notebooks.
+The list can be seen below.</p>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_collisions.ipynb">Parsing <code>&lt;collision&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_convert_from_sdf_file.ipynb">Importing SDF file</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_geometries.ipynb">Parsing <code>&lt;geometry&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_links_joints_sensors.ipynb">Parsing <code>&lt;link&gt;</code>, <code>&lt;joint&gt;</code> and <code>&lt;sensor&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_materials.ipynb">Parsing <code>&lt;materials&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_models.ipynb">Parsing <code>&lt;model&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_physics_engines.ipynb">Parsing <code>&lt;physics&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_plugins.ipynb">Parsing <code>&lt;plugin&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_visuals.ipynb">Parsing <code>&lt;visual&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/sdf_parser_world.ipynb">Parsing <code>&lt;world&gt;</code> elements</a></li>
+</ul>
+<h5 id="urdf-parsers">URDF parsers<a class="headerlink" href="#urdf-parsers" title="Permanent link">&para;</a></h5>
+<p>The examples for the <code>urdf</code> parser is available as Jupyter notebooks.
+The list can be seen below.</p>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/urdf_parser_collision.ipynb">Parsing <code>&lt;collision&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/urdf_parser_geometries.ipynb">Parsing <code>&lt;geometry&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/urdf_parser_links_joints_sensors.ipynb">Parsing <code>&lt;link&gt;</code>, <code>&lt;joint&gt;</code> and <code>&lt;sensor&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/urdf_parser_robots.ipynb">Parsing <code>&lt;robot&gt;</code> elements</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/urdf_parser_visual.ipynb">Parsing <code>&lt;visual&gt;</code> elements</a></li>
+</ul>
+<h5 id="occupancy-grid-generation">Occupancy grid generation<a class="headerlink" href="#occupancy-grid-generation" title="Permanent link">&para;</a></h5>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/gen_grid_map.ipynb">Generating an occupancy grid map from a generated world</a></li>
+</ul>
+<h5 id="task-manager">Task manager<a class="headerlink" href="#task-manager" title="Permanent link">&para;</a></h5>
+<ul>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/tm_gazebo_proxy.ipynb">Using the Gazebo proxy object</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/tm_process_manager.ipynb">Showcasing the process manager for simulation tasks</a></li>
+<li><a href="https://github.com/boschresearch/pcg_gazebo/blob/master/examples/tm_stage_conditions.ipynb">Showcasing the setup of conditional stages for sequences of tasks</a></li>
+</ul>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../single_room_generation/" title="Single Room Generation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Single Room Generation
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../reference/log/" title="pcg_gazebo.log" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                pcg_gazebo.log
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+  <div class="md-footer-social">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+    
+      <a href="https://github.com/boschresearch" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>
