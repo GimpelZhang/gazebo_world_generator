@@ -54,6 +54,7 @@ class WorldGenerator(_Generator):
 
         # Set of world descriptions, if none exists
         if self._simulation_entity is None:
+            print("line 88.")
             self.init()
 
     def __str__(self):
@@ -82,6 +83,8 @@ class WorldGenerator(_Generator):
         from ..simulation import World
         if name is None:
             name = self._name
+        print("line 89.")
+        print(name)
         self._simulation_entity = World(name=name)
 
     def init_gazebo_proxy(

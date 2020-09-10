@@ -157,10 +157,12 @@ class ModelGroup(Entity):
 
         `bool`: `True`, if model could be added to the world.
         """
+        print("line 60.")
         assert isinstance(model, (SimulationModel, ModelGroup)), \
             'Input model is not of type' \
             ' SimulationModel nor a ModelGroup'
         if self.model_exists(tag):
+            print("line 61.")
             # Add counter suffix to add models with same name
             i = 0
             new_model_name = '{}'.format(tag)
@@ -170,9 +172,13 @@ class ModelGroup(Entity):
             name = new_model_name
         else:
             name = tag
+        print("line 62.")
+        print(name)
 
         self._models[name] = model.copy()
+        print("line 63.")
         self._models[name].name = name
+        print("line 64.")
         return name
 
     def rm_model(self, tag):
@@ -456,6 +462,7 @@ class ModelGroup(Entity):
     def get_model(self, name, with_group_prefix=True, use_group_pose=True):
         prefix = self.prefix if with_group_prefix else ''
         if '/' not in name:
+            print("line 86.")
             if name not in self._models:
                 PCG_ROOT_LOGGER.warning('No model {} found in group {}'.format(
                     name, self.name))
@@ -467,6 +474,7 @@ class ModelGroup(Entity):
                 output.pose = self._pose + output.pose
             output.name = prefix + output.name
         else:
+            print("line 87.")
             sub_group_name = name.split('/')[0]
             if sub_group_name not in self._models:
                 PCG_ROOT_LOGGER.warning(
@@ -497,6 +505,7 @@ class ModelGroup(Entity):
             return False
 
         for name in self._models:
+            print("line 85.")
             if _is_ignored(name):
                 continue
             if isinstance(self._models[name], SimulationModel):

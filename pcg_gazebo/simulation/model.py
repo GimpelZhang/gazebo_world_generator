@@ -188,10 +188,13 @@ class SimulationModel(Entity):
         self._is_ground_plane = True
 
     def copy(self):
+        print("line 65.")
         model = SimulationModel.from_sdf(self.to_sdf())
+        print("line 66.")
         model.static = self.static
         model._is_gazebo_model = self._is_gazebo_model
         model._source_model_name = self._source_model_name
+        print("line 67.")
         return model
 
     def merge(self, model):
@@ -1293,7 +1296,9 @@ class SimulationModel(Entity):
                model_folder=None, copy_resources=False):
         assert type in [
             'model', 'sdf'], 'Output type must be either model or sdf'
+        print("line 81.")
         model = create_sdf_element('model')
+        print("line 82.")
         model.name = self._name
         model.pose = self.pose.to_sdf()
         model.static = self._static
@@ -1327,7 +1332,9 @@ class SimulationModel(Entity):
         sdf.reset('model')
 
         sdf.version = sdf_version
+        print("line 83.")
         sdf.add_model(model.name, model)
+        print("line 84.")
 
         return sdf
 
@@ -1343,12 +1350,14 @@ class SimulationModel(Entity):
 
     @staticmethod
     def from_sdf(sdf):
+        print("line 68.")
         if sdf._NAME != 'model':
             msg = 'SDF element must be of type <model>'
             PCG_ROOT_LOGGER.error(msg)
             raise ValueError(msg)
 
         model = SimulationModel()
+        print("line 69.")
         # Store model name
         model.name = sdf.name
 
@@ -1356,45 +1365,55 @@ class SimulationModel(Entity):
         model.self_collide = \
             False if sdf.self_collide is None \
             else sdf.self_collide.value
+        print("line 70.")
         model.allow_auto_disable = \
             True if sdf.allow_auto_disable is None \
             else sdf.allow_auto_disable.value
+        print("line 71.")
         model.static = False if sdf.static is None else sdf.static.value
+        print("line 72.")
 
         # Set model pose
         if sdf.pose is not None:
             model.pose = Pose.from_sdf(sdf.pose)
+        print("line 73.")
         # Parse links
         if sdf.links:
             for link_sdf in sdf.links:
                 model.add_link(
                     link_sdf.name, Link.from_sdf(link_sdf))
+            print("line 74.")
 
         # Parse joints
         if sdf.joints:
             for joint_sdf in sdf.joints:
                 model._joints[joint_sdf.name] = Joint.from_sdf(joint_sdf)
+            print("line 75.")
 
         # Parse nested included models
         if sdf.includes:
+            print("line 76.")
             for include_sdf in sdf.includes:
                 model_name = include_sdf.uri.value.replace('model://', '')
                 instance_name = include_sdf.name.value
                 model.add_model(
                     instance_name,
                     SimulationModel.from_gazebo_model(model_name))
+                print("line 77.")
                 if include_sdf.pose is not None:
                     model.models[instance_name].pose = \
                         include_sdf.pose.value
                 if include_sdf.static is not None:
                     model.models[instance_name].static = \
                         include_sdf.static.value
+                print("line 78.")
         # Parse nested models
         if sdf.models:
             for model_sdf in sdf.models:
                 model.add_model(
                     model_sdf.name,
                     SimulationModel.from_sdf(model_sdf))
+            print("line 79.")
 
         # Parse plugins
         if sdf.plugins:
@@ -1402,6 +1421,7 @@ class SimulationModel(Entity):
                 model.add_plugin(
                     name=plugin_sdf.name,
                     plugin=Plugin.from_sdf(plugin_sdf))
+            print("line 80.")
 
         return model
 

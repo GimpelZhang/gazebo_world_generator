@@ -309,6 +309,7 @@ class RandomPoseEngine(Engine):
 
             # Retrieve model
             model = self._get_model(model_name)
+            # print(model)
             # model.show()
             if model is None:
                 self._logger.error(
