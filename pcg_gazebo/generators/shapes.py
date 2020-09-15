@@ -166,11 +166,11 @@ def random_rectangle_rooms(
             delta_x_max,
             delta_y_min,
             delta_y_max)
+        if len(door_rooms)>0:
+            for d in door_rooms:
+                if d.intersects(new_rect):
+                    break    
         for r in rectangles[0:n_other]:
-            if len(door_rooms)>0:
-                for d in door_rooms:
-                    if d.intersects(new_rect):
-                        break    
             if r.intersects(new_rect):
                 if r.intersection(new_rect).area<2 and r.intersection(new_rect).area>1 and r.contains(new_cir):
                     rectangles.append(new_rect)
