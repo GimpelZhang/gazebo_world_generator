@@ -83,7 +83,7 @@ def random_rect_cir(x_center=0, y_center=0, delta_x_min=2,
     y_max = y_center + delta_y / 2.0
     
     centers = [[x_min,random.rand()*(y_max-y_min-1.0)+y_min+0.5],[x_max,random.rand()*(y_max-y_min-1.0)+y_min+0.5],[random.rand()*(x_max-x_min-1.0)+x_min+0.5,y_min],[random.rand()*(x_max-x_min-1.0)+x_min+0.5,y_max]]
-    return rectangle(x_center, y_center, delta_x, delta_y),circle(choice(centers),radius=0.5)
+    return rectangle(x_center, y_center, delta_x, delta_y),circle(choice(centers),radius=0.5),[x_center,y_center]
 
 def random_points_to_triangulation(n_points=10, x_min=-10, x_max=10,
                                    y_min=-10, y_max=10):
@@ -138,6 +138,7 @@ def random_rectangle_rooms(
     polygon = None
     rectangles = list()
     n_other = 3
+    rectangles.append(rectangle(0, 0, 10, 10))
     # Living room, kitchen, hallway:
     while len(rectangles) < n_other:
         new_rect = random_rectangle(
@@ -150,37 +151,55 @@ def random_rectangle_rooms(
         if len(rectangles) == 0:
             rectangles.append(new_rect)
         else:
+            area_flag = False
             for r in rectangles:
                 if r.intersects(new_rect):
                     # to guarantee the area of a room:
                     if r.intersection(new_rect).area<2 and r.intersection(new_rect).area>1:
-                        rectangles.append(new_rect)
+                        area_flag = True
+                    else:
+                        area_flag = False
                         break
+            if area_flag:
+                rectangles.append(new_rect)
+                        
     # bedroom, dining room, bathroom
     door_rooms = list()
+    room_pos = list()
     while len(rectangles) < n_rect:
-        new_rect, new_cir = random_rect_cir(
+        new_rect, new_cir, new_pos = random_rect_cir(
             random.rand() * (x_center_max - x_center_min) + x_center_min,
             random.rand() * (y_center_max - y_center_min) + y_center_min,
             delta_x_min,
             delta_x_max,
             delta_y_min,
             delta_y_max)
-        if len(door_rooms)>0:
-            for d in door_rooms:
-                if d.intersects(new_rect):
-                    break    
-        for r in rectangles[0:n_other]:
-            if r.intersects(new_rect):
-                if r.intersection(new_rect).area<2 and r.intersection(new_rect).area>1 and r.contains(new_cir):
-                    rectangles.append(new_rect)
-                    rec_bound = unary_union(new_rect.boundary)
-                    room_wall = rec_bound.buffer(0.15,cap_style=1,join_style=1)
-                    door_room = room_wall.difference(new_cir)
-                    door_rooms.append(door_room)
+        inter_flag = False
+        if len(rectangles[n_other:])>0:
+            for d in rectangles[n_other:]:
+                if d.intersects(new_rect) or d.intersects(new_cir):
+                    inter_flag = True
                     break
+        if not inter_flag:
+            area_flag = False    
+            for r in rectangles[0:n_other]:
+                if r.intersects(new_rect):
+                    if r.intersection(new_rect).area<2 and r.intersection(new_rect).area>1 and r.contains(new_cir):
+                        area_flag = True
+                    else:
+                        area_flag = False
+                        break
+            if area_flag:
+                rectangles.append(new_rect)
+                rec_bound = unary_union(new_rect.boundary)
+                room_wall = rec_bound.buffer(0.15,cap_style=1,join_style=1)
+                door_room = room_wall.difference(new_cir)
+                door_rooms.append(door_room)
+                room_pos.append(new_pos)
+    
     polygon = unary_union(rectangles)
-    return polygon,rectangles,door_rooms
+    print("range:  ",polygon.bounds)
+    return polygon,rectangles,door_rooms,room_pos
 
 def random_orthogonal_lines(
         n_lines=5,

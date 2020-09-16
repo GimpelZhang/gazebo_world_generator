@@ -21,7 +21,7 @@ from pcg_gazebo.simulation import SimulationModel, \
     add_custom_gazebo_resource_path
 from pcg_gazebo.generators.creators import extrude
 from pcg_gazebo.generators.shapes import random_rectangles, \
-    random_rectangle, random_points_to_triangulation
+    random_rectangle, random_rectangle_rooms,random_points_to_triangulation
 from pcg_gazebo.generators import WorldGenerator
 
 
@@ -149,16 +149,17 @@ if __name__ == '__main__':
     # Generate the reference polygon for the wall boundaries
     if args.n_rectangles is not None:
         if args.n_rectangles > 1:
-            wall_polygon = random_rectangles(
-                n_rect=args.n_rectangles,
-                x_center_min=-args.x_room_range / 2.,
-                x_center_max=args.x_room_range / 2.,
-                y_center_min=-args.y_room_range / 2.,
-                y_center_max=args.y_room_range / 2.,
-                delta_x_min=args.x_room_range / 2.,
-                delta_x_max=args.x_room_range,
-                delta_y_min=args.y_room_range / 2.,
-                delta_y_max=args.y_room_range)
+            # wall_polygon = random_rectangles(
+            #     n_rect=args.n_rectangles,
+            #     x_center_min=-args.x_room_range / 2.,
+            #     x_center_max=args.x_room_range / 2.,
+            #     y_center_min=-args.y_room_range / 2.,
+            #     y_center_max=args.y_room_range / 2.,
+            #     delta_x_min=args.x_room_range / 2.,
+            #     delta_x_max=args.x_room_range,
+            #     delta_y_min=args.y_room_range / 2.,
+            #     delta_y_max=args.y_room_range)
+            wall_polygon,rooms_range,door_rooms,room_pos = random_rectangle_rooms()
         elif args.n_rectangles == 1:
             wall_polygon = random_rectangle(
                 delta_x_min=args.x_room_range / 2.,
@@ -180,17 +181,34 @@ if __name__ == '__main__':
         raise ValueError(
             'No number of rectangles and no number of points for'
             ' triangulation were provided')
-
+    print(rooms_range)
+    print(len(rooms_range))
+    print(door_rooms)
+    print(room_pos)
+    poly_range = wall_polygon.bounds
+    # print(len(door_rooms))
     # Create the wall model based on the extruded
     # boundaries of the polygon
     walls_model = extrude(
         polygon=wall_polygon,
         thickness=args.wall_thickness,
         height=args.wall_height,
-        pose=[0, 0, args.wall_height / 2., 0, 0, 0],
+        # pose=[wall_polygon.centroid.x, wall_polygon.centroid.y, args.wall_height / 2., 0, 0, 0],
+        pose=[(poly_range[2]+poly_range[0])/2., (poly_range[3]+poly_range[1])/2., args.wall_height / 2., 0, 0, 0],
         extrude_boundaries=True,
         color='xkcd')
     walls_model.name = world_name + '_walls'
+
+    # walls_model_m = extrude(
+    #     polygon=wall_polygon,
+    #     thickness=args.wall_thickness,
+    #     height=args.wall_height,
+    #     pose=[-wall_polygon.centroid.x, -wall_polygon.centroid.y, args.wall_height / 2., 0, 0, 0],
+    #     # pose=[0, 0, args.wall_height / 2., 0, 0, 0],
+    #     extrude_boundaries=True,
+    #     color='xkcd')
+    # walls_model_m.name = world_name + '_walls_m'
+    print(wall_polygon.centroid.x, wall_polygon.centroid.y)
 
     # Create a world generator to place
     # objects in the world
@@ -200,9 +218,27 @@ if __name__ == '__main__':
     world_generator.world.add_model(
         tag=walls_model.name,
         model=walls_model)
+    # world_generator.world.add_model(
+    #     tag=walls_model_m.name,
+    #     model=walls_model_m)
     world_generator.world.add_model(
         tag='ground_plane',
         model=SimulationModel.from_gazebo_model('ground_plane'))
+
+    for door_room,position in zip(door_rooms,room_pos):
+        one_room_wall = extrude(
+            polygon=door_room,
+            thickness=args.wall_thickness,
+            height=args.wall_height,
+            pose=[position[0],position[1], args.wall_height / 2., 0, 0, 0],
+            extrude_boundaries=False,
+            color='xkcd'
+        )
+        one_room_wall.name = world_name+'_room'+str(door_room.area)
+        world_generator.world.add_model(
+            tag=one_room_wall.name,
+            model=one_room_wall
+        )
 
     # Retrieve the free space polygon where objects
     # can be placed within the walls
