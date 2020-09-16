@@ -1,70 +1,70 @@
-name: Python application
+# name: Python application
 
-on: [push]
+# on: [push]
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
-    strategy:
-        matrix:      
-          python-version: [2.7, 3.6, 3.7, 3.8]
+#     runs-on: ubuntu-latest
+#     strategy:
+#         matrix:      
+#           python-version: [2.7, 3.6]
 
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python
-      uses: actions/setup-python@v1            
-      with:
-        python-version: ${{ matrix.python-version }}
-        architecture: x64
-    - name: Display Python version
-      run: python -c "import sys; print(sys.version)"
-    - name: Install dependencies
-      run: |
-        sudo apt-get -qq update
-        sudo apt-get install libspatialindex-dev pybind11-dev libgeos-dev blender libfcl-dev liboctomap-dev -y -qq
-    - name: Lint with flake8
-      run: |
-        pip install flake8 autopep8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 pcg_gazebo
-        flake8 scripts
-        flake8 tests
-        autopep8 --recursive --aggressive --diff --exit-code pcg_gazebo
-        autopep8 --recursive --aggressive --diff --exit-code scripts
-        autopep8 --recursive --aggressive --diff --exit-code tests        
-    - name: Install package
-      run: |
-        python -m pip install --upgrade pip
-        pip install -e .[test]
-        python -c "import pcg_gazebo"
-    - name: Test with pytest
-      run: |
-        pytest tests/ -v
-    - name: Prepare package for deployment
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
-      run: |
-        sudo apt-get install pandoc -y -qq
-        pip install twine wheel pypandoc
-        python setup.py sdist bdist_wheel
-        twine check dist/*
-    # - name: Update and commit GitHub Pages
-    #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
-    #   run: |
-    #     pip install -e .[docs]
-    #     pydocmd build
-    #     git config --local user.email "action@github.com"
-    #     git config --local user.name "GitHub Action"
-    #     git commit -m "Update documentation" -a    
-    # - name: Push GitHub Pages
-    #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
-    #   uses: ad-m/github-push-action@master
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    #     branch: ${{ github.event.pull_request.head.ref }}
-    - name: Publish package
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        user: ${{ secrets.PYPI_USERNAME }}
-        password: ${{ secrets.PYPI_PASSWORD }}
+#     steps:
+#     - uses: actions/checkout@v1
+#     - name: Set up Python
+#       uses: actions/setup-python@v1            
+#       with:
+#         python-version: ${{ matrix.python-version }}
+#         architecture: x64
+#     - name: Display Python version
+#       run: python -c "import sys; print(sys.version)"
+#     - name: Install dependencies
+#       run: |
+#         sudo apt-get -qq update
+#         sudo apt-get install libspatialindex-dev pybind11-dev libgeos-dev blender libfcl-dev liboctomap-dev -y -qq
+#     - name: Lint with flake8
+#       run: |
+#         pip install flake8 autopep8
+#         # stop the build if there are Python syntax errors or undefined names
+#         flake8 pcg_gazebo
+#         flake8 scripts
+#         flake8 tests
+#         autopep8 --recursive --aggressive --diff --exit-code pcg_gazebo
+#         autopep8 --recursive --aggressive --diff --exit-code scripts
+#         autopep8 --recursive --aggressive --diff --exit-code tests        
+#     - name: Install package
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -e .[test]
+#         python -c "import pcg_gazebo"
+#     - name: Test with pytest
+#       run: |
+#         pytest tests/ -v
+#     - name: Prepare package for deployment
+#       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
+#       run: |
+#         sudo apt-get install pandoc -y -qq
+#         pip install twine wheel pypandoc
+#         python setup.py sdist bdist_wheel
+#         twine check dist/*
+#     # - name: Update and commit GitHub Pages
+#     #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
+#     #   run: |
+#     #     pip install -e .[docs]
+#     #     pydocmd build
+#     #     git config --local user.email "action@github.com"
+#     #     git config --local user.name "GitHub Action"
+#     #     git commit -m "Update documentation" -a    
+#     # - name: Push GitHub Pages
+#     #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
+#     #   uses: ad-m/github-push-action@master
+#     #   with:
+#     #     github_token: ${{ secrets.GITHUB_TOKEN }}
+#     #     branch: ${{ github.event.pull_request.head.ref }}
+#     - name: Publish package
+#       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && matrix.python-version == 3.6
+#       uses: pypa/gh-action-pypi-publish@master
+#       with:
+#         user: ${{ secrets.PYPI_USERNAME }}
+#         password: ${{ secrets.PYPI_PASSWORD }}
