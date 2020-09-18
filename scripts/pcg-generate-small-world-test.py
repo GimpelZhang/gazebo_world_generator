@@ -149,16 +149,6 @@ if __name__ == '__main__':
     # Generate the reference polygon for the wall boundaries
     if args.n_rectangles is not None:
         if args.n_rectangles > 1:
-            # wall_polygon = random_rectangles(
-            #     n_rect=args.n_rectangles,
-            #     x_center_min=-args.x_room_range / 2.,
-            #     x_center_max=args.x_room_range / 2.,
-            #     y_center_min=-args.y_room_range / 2.,
-            #     y_center_max=args.y_room_range / 2.,
-            #     delta_x_min=args.x_room_range / 2.,
-            #     delta_x_max=args.x_room_range,
-            #     delta_y_min=args.y_room_range / 2.,
-            #     delta_y_max=args.y_room_range)
             wall_polygon,rooms_range,door_rooms,room_pos = random_rectangle_rooms()
         elif args.n_rectangles == 1:
             wall_polygon = random_rectangle(
@@ -197,17 +187,8 @@ if __name__ == '__main__':
         pose=[(poly_range[2]+poly_range[0])/2., (poly_range[3]+poly_range[1])/2., args.wall_height / 2., 0, 0, 0],
         extrude_boundaries=True,
         color='xkcd')
-    walls_model.name = world_name + '_walls'
+    walls_model.name = world_name + '_walls'+str(wall_polygon.area)
 
-    # walls_model_m = extrude(
-    #     polygon=wall_polygon,
-    #     thickness=args.wall_thickness,
-    #     height=args.wall_height,
-    #     pose=[-wall_polygon.centroid.x, -wall_polygon.centroid.y, args.wall_height / 2., 0, 0, 0],
-    #     # pose=[0, 0, args.wall_height / 2., 0, 0, 0],
-    #     extrude_boundaries=True,
-    #     color='xkcd')
-    # walls_model_m.name = world_name + '_walls_m'
     print(wall_polygon.centroid.x, wall_polygon.centroid.y)
 
     # Create a world generator to place
@@ -218,9 +199,6 @@ if __name__ == '__main__':
     world_generator.world.add_model(
         tag=walls_model.name,
         model=walls_model)
-    # world_generator.world.add_model(
-    #     tag=walls_model_m.name,
-    #     model=walls_model_m)
     world_generator.world.add_model(
         tag='ground_plane',
         model=SimulationModel.from_gazebo_model('ground_plane'))
@@ -270,7 +248,46 @@ if __name__ == '__main__':
             )
         )
     )
-
+    world_generator.add_asset(tag='bed',description=SimulationModel.from_gazebo_model('bed'))
+    world_generator.add_asset(tag='shelf',description=SimulationModel.from_gazebo_model('bookshelf_2019'))
+    
+    bed_room = rooms_range[3]
+    # TEMP positions:
+    if room_pos[0][2]==0:
+        bed_x = bed_room.bounds[2]-(1.0+0.15)
+        bed_y = bed_room.bounds[3]-(0.4+0.15)-0.2-1.05
+        ward_x = bed_room.bounds[2]-(2.0+0.15)-0.2
+        ward_y = bed_room.bounds[3]-(0.2+0.15)
+        ward_yaw = 0
+    elif room_pos[0][2]==1:
+        bed_x = bed_room.bounds[0]+(1.0+0.15)
+        bed_y = bed_room.bounds[1]+(1.05+0.15)+0.2+0.4
+        ward_x = bed_room.bounds[0]+(2.0+0.15)+0.2
+        ward_y = bed_room.bounds[1]+(0.2+0.15)
+        ward_yaw = 3.141592653
+    elif room_pos[0][2]==2:
+        bed_x = bed_room.bounds[2]-(0.4+0.15)-0.2-1.0
+        bed_y = bed_room.bounds[3]-(1.05+0.15)
+        ward_x = bed_room.bounds[2]-(0.2+0.15)
+        ward_y = bed_room.bounds[3]-(2.05+0.15)-0.4
+        ward_yaw = -1.5708
+    else:
+        bed_x = bed_room.bounds[0]+(0.4+0.15)+0.2+1.0
+        bed_y = bed_room.bounds[1]+(1.05+0.15)
+        ward_x = bed_room.bounds[0]+(0.2+0.15)
+        ward_y = bed_room.bounds[1]+(2.05+0.15)+0.4
+        ward_yaw = 1.5708
+    
+    world_generator.add_engine(
+        engine_name='fixed_pose',
+        tag='beg_engine',
+        models=['bed'],
+        poses=[[bed_x, bed_y, 0, 0, 0, 0]])
+    world_generator.add_engine(
+        engine_name='fixed_pose',
+        tag='shelf_engine',
+        models=['shelf'],
+        poses=[[ward_x, ward_y, 0, 0, 0, ward_yaw]])
     # Add assets
     models = dict()
     if args.n_cubes is not None and args.n_cubes > 0:

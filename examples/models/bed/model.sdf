@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="bed">
+    <link name="brick_box">
+      <inertial>
+        <pose>0 0 -1 0 0 0</pose>
+        <inertia>
+          <ixx>2.050000</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.050000</iyy>
+          <iyz>0</iyz>
+          <izz>2.050000</izz>
+        </inertia>
+        <mass>25.000000</mass>
+      </inertial>
+      <collision name="box">
+        <pose>0 0 0.2500 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.9700 2.03000 0.50000</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="box">
+        <pose>0 0 0.25000 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>1.9700 2.03000 0.50000</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Bricks</name>
+          </script>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <static>1</static>
+    <allow_auto_disable>1</allow_auto_disable>
+  </model>
+</sdf>

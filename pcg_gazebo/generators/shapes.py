@@ -97,7 +97,7 @@ def random_rect_cir(x_center=0, y_center=0, delta_x=10,delta_y=10):
     
     centers = [[x_min,random.rand()*(y_max-y_min-1.0)+y_min+0.5],[x_max,random.rand()*(y_max-y_min-1.0)+y_min+0.5],[random.rand()*(x_max-x_min-1.0)+x_min+0.5,y_min],[random.rand()*(x_max-x_min-1.0)+x_min+0.5,y_max]]
     circle_center = choice(centers)
-    return rectangle(x_center, y_center, delta_x, delta_y),circle(circle_center,radius=0.5),circle(circle_center),[x_center,y_center]
+    return rectangle(x_center, y_center, delta_x, delta_y),circle(circle_center,radius=0.5),circle(circle_center),[x_center,y_center,centers.index(circle_center)]
 
 def random_points_to_triangulation(n_points=10, x_min=-10, x_max=10,
                                    y_min=-10, y_max=10):
