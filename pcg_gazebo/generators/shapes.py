@@ -188,6 +188,7 @@ def random_rectangle_rooms(
     # bedroom, dining room, bathroom
     door_rooms = list()
     room_pos = list()
+    door_cir = list()
     while len(rectangles) < n_rect:
         new_rect, new_cir,new_cir_l, new_pos = random_rect_cir(
             random.rand() * (x_center_max - x_center_min) + x_center_min,
@@ -221,12 +222,13 @@ def random_rectangle_rooms(
                 door_room = room_wall.difference(new_cir)
                 door_rooms.append(door_room)
                 room_pos.append(new_pos)
+                door_cir.append(new_cir)
                 room_iter = room_iter+1
     
     polygon = unary_union(rectangles)
     print("range:  ",polygon.bounds)
     print("overlaps: ",len(overlaps))
-    return polygon,rectangles,door_rooms,room_pos
+    return polygon,rectangles,door_rooms,room_pos,door_cir
 
 def random_orthogonal_lines(
         n_lines=5,
