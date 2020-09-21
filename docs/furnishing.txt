@@ -1,0 +1,9 @@
+Bedroom:
+-bed
+-wardrobe
+-desk
+-chair
+-random
+
+Living room:
+

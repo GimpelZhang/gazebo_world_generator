@@ -17,15 +17,17 @@
 import os
 import argparse
 import datetime
+import time
 from pcg_gazebo.simulation import SimulationModel, \
     add_custom_gazebo_resource_path
 from pcg_gazebo.generators.creators import extrude
 from pcg_gazebo.generators.shapes import random_rectangles, \
-    random_rectangle, random_points_to_triangulation
+    random_rectangle, random_rectangle_rooms,random_points_to_triangulation
 from pcg_gazebo.generators import WorldGenerator
 
 
 if __name__ == '__main__':
+    time_start=time.time()
     description = \
         'Generates a sample world with walls ' \
         'and objects as primitives'
@@ -149,16 +151,7 @@ if __name__ == '__main__':
     # Generate the reference polygon for the wall boundaries
     if args.n_rectangles is not None:
         if args.n_rectangles > 1:
-            wall_polygon = random_rectangles(
-                n_rect=args.n_rectangles,
-                x_center_min=-args.x_room_range / 2.,
-                x_center_max=args.x_room_range / 2.,
-                y_center_min=-args.y_room_range / 2.,
-                y_center_max=args.y_room_range / 2.,
-                delta_x_min=args.x_room_range / 2.,
-                delta_x_max=args.x_room_range,
-                delta_y_min=args.y_room_range / 2.,
-                delta_y_max=args.y_room_range)
+            wall_polygon,rooms_range,door_rooms,room_pos,door_cir = random_rectangle_rooms()
         elif args.n_rectangles == 1:
             wall_polygon = random_rectangle(
                 delta_x_min=args.x_room_range / 2.,
@@ -180,17 +173,25 @@ if __name__ == '__main__':
         raise ValueError(
             'No number of rectangles and no number of points for'
             ' triangulation were provided')
-
+    print(rooms_range)
+    print(len(rooms_range))
+    print(door_rooms)
+    print(room_pos)
+    poly_range = wall_polygon.bounds
+    # print(len(door_rooms))
     # Create the wall model based on the extruded
     # boundaries of the polygon
     walls_model = extrude(
         polygon=wall_polygon,
         thickness=args.wall_thickness,
         height=args.wall_height,
-        pose=[0, 0, args.wall_height / 2., 0, 0, 0],
+        # pose=[wall_polygon.centroid.x, wall_polygon.centroid.y, args.wall_height / 2., 0, 0, 0],
+        pose=[(poly_range[2]+poly_range[0])/2., (poly_range[3]+poly_range[1])/2., args.wall_height / 2., 0, 0, 0],
         extrude_boundaries=True,
         color='xkcd')
-    walls_model.name = world_name + '_walls'
+    walls_model.name = world_name + '_walls'+str(wall_polygon.area)
+
+    print(wall_polygon.centroid.x, wall_polygon.centroid.y)
 
     # Create a world generator to place
     # objects in the world
@@ -204,6 +205,33 @@ if __name__ == '__main__':
         tag='ground_plane',
         model=SimulationModel.from_gazebo_model('ground_plane'))
 
+    for door_room,position,door_room_range in zip(door_rooms,room_pos,rooms_range[3:]):
+        one_room_wall = extrude(
+            polygon=door_room,
+            thickness=args.wall_thickness,
+            height=args.wall_height,
+            pose=[position[0],position[1], args.wall_height / 2., 0, 0, 0],
+            extrude_boundaries=False,
+            color='xkcd'
+        )
+        one_room_wall.name = world_name+'_room'+str(door_room.area)
+        world_generator.world.add_model(
+            tag=one_room_wall.name,
+            model=one_room_wall
+        )
+        one_room_range = extrude(
+            polygon = door_room_range,
+            thickness=args.wall_thickness,
+            height=args.wall_height,
+            pose=[position[0],position[1], args.wall_height / 2., 0, 0, 0],
+            extrude_boundaries=True,
+            color='xkcd'
+        )
+        one_room_range.name = world_name+'_door'+str(door_room_range.area)
+        world_generator.world.add_model(
+            tag=one_room_range.name,
+            model=one_room_range
+        )
     # Retrieve the free space polygon where objects
     # can be placed within the walls
     free_space_polygon = world_generator.world.get_free_space_polygon(
@@ -234,6 +262,95 @@ if __name__ == '__main__':
             )
         )
     )
+    ### Bedroom:
+    world_generator.add_asset(tag='bed',description=SimulationModel.from_gazebo_model('bed'))
+    world_generator.add_asset(tag='shelf',description=SimulationModel.from_gazebo_model('bookshelf_2019'))
+    
+    bed_room = rooms_range[3]
+    # TEMP positions:
+    if room_pos[0][2]==0:
+        bed_x = bed_room.bounds[2]-(1.0+0.15)
+        bed_y = bed_room.bounds[3]-(0.4+0.15)-0.2-1.05
+        ward_x = bed_room.bounds[2]-(2.0+0.15)-0.2
+        ward_y = bed_room.bounds[3]-(0.2+0.15)
+        ward_yaw = 0
+    elif room_pos[0][2]==1:
+        bed_x = bed_room.bounds[0]+(1.0+0.15)
+        bed_y = bed_room.bounds[1]+(1.05+0.15)+0.2+0.4
+        ward_x = bed_room.bounds[0]+(2.0+0.15)+0.2
+        ward_y = bed_room.bounds[1]+(0.2+0.15)
+        ward_yaw = 3.141592653
+    elif room_pos[0][2]==2:
+        bed_x = bed_room.bounds[2]-(0.4+0.15)-0.2-1.0
+        bed_y = bed_room.bounds[3]-(1.05+0.15)
+        ward_x = bed_room.bounds[2]-(0.2+0.15)
+        ward_y = bed_room.bounds[3]-(2.05+0.15)-0.4
+        ward_yaw = -1.5708
+    else:
+        bed_x = bed_room.bounds[0]+(0.4+0.15)+0.2+1.0
+        bed_y = bed_room.bounds[1]+(1.05+0.15)
+        ward_x = bed_room.bounds[0]+(0.2+0.15)
+        ward_y = bed_room.bounds[1]+(2.05+0.15)+0.4
+        ward_yaw = 1.5708
+    
+    world_generator.add_engine(
+        engine_name='fixed_pose',
+        tag='beg_engine',
+        models=['bed'],
+        poses=[[bed_x, bed_y, 0, 0, 0, 0]])
+    world_generator.add_engine(
+        engine_name='fixed_pose',
+        tag='shelf_engine',
+        models=['shelf'],
+        poses=[[ward_x, ward_y, 0, 0, 0, ward_yaw]])
+
+    bedroom_free_space = world_generator.world.get_free_space_polygon(
+        ground_plane_models=[world_name+'_door'+str(rooms_range[3].area),'bed','shelf'],
+        ignore_models=['ground_plane'])
+    bedroom_free_space = bedroom_free_space.difference(door_cir[0])
+    world_generator.add_constraint(
+        name='bedroom_workspace',
+        type='workspace',
+        frame='world',
+        geometry_type='polygon',
+        polygon=bedroom_free_space
+    )
+    world_generator.add_asset(tag='desk',description=SimulationModel.from_gazebo_model('desk'))
+    world_generator.add_asset(tag='desk_chair',description=SimulationModel.from_gazebo_model('desk_chair'))
+
+    # Add placement policy
+    bedroom_placement_policy = dict(
+        models=['desk','desk_chair'],
+        config=[
+            dict(
+                dofs=['x', 'y'],
+                tag='workspace',
+                workspace='bedroom_workspace'
+            ),
+            dict(
+                dofs=['yaw'],
+                tag='uniform',
+                mean=0,
+                min=-3.141592653589793,
+                max=3.141592653589793
+            )
+        ]
+    )
+
+    # Set local constraints
+
+    # Place objects randomly on the free
+    # space within the walls
+    world_generator.add_engine(
+        tag='bedroom_placement',
+        engine_name='random_pose',
+        models=['desk','desk_chair'],
+        max_num={'desk':1,'desk_chair':1},
+        model_picker='random',
+        no_collision=True,
+        policies=[bedroom_placement_policy]
+    )
+
 
     # Add assets
     models = dict()
@@ -324,20 +441,24 @@ if __name__ == '__main__':
         policies=[placement_policy],
         constraints=local_constraints
     )
-
+    for door_room_range in rooms_range[3:]:
+        world_generator.world.rm_model(tag=world_name+'_door'+str(door_room_range.area))
     # Run placement engine
     world_generator.run_engines(attach_models=True)
     world_generator.world.name = world_name
+
+    time_end=time.time()
+    
     if args.preview:
         world_generator.world.show()
-
+    print('time cost',time_end-time_start,'s')
     add_custom_gazebo_resource_path(args.export_models_dir)
 
     # Export world to file and walls model as Gazebo model
-    full_world_filename = world_generator.export_world(
-        output_dir=args.export_world_dir,
-        filename=world_generator.world.name + '.world',
-        models_output_dir=args.export_models_dir,
-        overwrite=True)
+    # full_world_filename = world_generator.export_world(
+    #     output_dir=args.export_world_dir,
+    #     filename=world_generator.world.name + '.world',
+    #     models_output_dir=args.export_models_dir,
+    #     overwrite=True)
 
-    print('World file: {}'.format(full_world_filename))
+    # print('World file: {}'.format(full_world_filename))
